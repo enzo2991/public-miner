@@ -1,0 +1,907 @@
+{
+  "name": "Kazuria",
+  "autoBoostBlockUpward": false,
+  "features": {
+    "autoMine": true,
+    "autoSprint": true,
+    "autoBoost": true,
+    "autoCameraLock": true,
+    "autoCenterBlock": true,
+    "autoFlightHeight": true,
+    "obstacleMiner": true,
+    "surfaceTargetMiner": false,
+    "worldBorder": true,
+    "miningWithoutDelay": true,
+    "placementWithoutDelay": true
+  },
+  "defaults": {
+    "enabled": [
+      "autoMine",
+      "autoSprint",
+      "autoCameraLock",
+      "autoCenterBlock",
+      "obstacleMiner"
+    ],
+    "worldBorderDistance": 0
+  },
+  "tnt": {
+    "builder": true,
+    "carpet": true,
+    "builderWandName": "Baguette du bâtisseur",
+    "shulkerItem": "minecraft:red_shulker_box",
+    "shopClicks": [
+      "minecraft:red_shulker_box"
+    ]
+  },
+  "playerAlerts": {
+    "inventoryFull": true,
+    "privateMessage": true,
+    "privateMessagePattern": "^\\[[^\\]]+ -> Moi\\]",
+    "defaults": {
+      "inventoryFull": true,
+      "inventoryFullSound": "minecraft:block.note_block.pling",
+      "inventoryFullVolume": 1.0,
+      "inventoryFullRepeat": 3,
+      "privateMessage": true,
+      "privateMessageSound": "minecraft:block.note_block.pling",
+      "privateMessageVolume": 1.0,
+      "privateMessageRepeat": 3
+    }
+  },
+  "portals": {
+    "defaults": {
+      "displayedWaypointCount": 3,
+      "waypointDisplayDistance": 256
+    },
+    "types": [
+      {
+        "id": "aether",
+        "displayName": "Portail Aether",
+        "block": "minecraft:sea_lantern",
+        "shape": "pair",
+        "size": 2,
+        "markerOffsetY": -7,
+        "monitor": false,
+        "icon": {
+          "item": "minecraft:paper",
+          "components": {
+            "minecraft:item_model": "nexo:larme_seraphin"
+          }
+        }
+      },
+      {
+        "id": "warden",
+        "displayName": "Portail Warden",
+        "block": "minecraft:end_portal",
+        "shape": "square",
+        "size": 3,
+        "markerOffsetY": 0,
+        "monitor": false,
+        "icon": {
+          "item": "minecraft:paper",
+          "components": {
+            "minecraft:item_model": "nexo:familier_warden"
+          }
+        }
+      }
+    ]
+  },
+  "blockAlerts": {
+    "available": true,
+    "sounds": true,
+    "waypoints": true,
+    "glow": true,
+    "defaults": {
+      "sounds": true,
+      "waypoints": true,
+      "glow": true,
+      "soundDelayTicks": 40,
+      "soundVolume": 1.0,
+      "displayedWaypointCount": 10,
+      "waypointDisplayDistance": 256,
+      "vanillaOreScanRadius": 16,
+      "otherBlockScanRadius": 16
+    },
+    "categories": {
+      "OVERWORLD": {
+        "blocks": [
+          {
+            "id": "citrouille_commun",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "2"
+            },
+            "displayName": "Citrouille ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_commun"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:fragment_commun"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#40E10C",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_peu_commun",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "3"
+            },
+            "displayName": "Citrouille ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_peu_commun"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:fragment_peu_commun"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#08D9EF",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_rare",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "4"
+            },
+            "displayName": "Citrouille ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_rare"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:fragment_rare"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#0080D3",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_epic",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "5"
+            },
+            "displayName": "Citrouille ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_epic"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:fragment_epic"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#9327F8",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_legendaire",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "6"
+            },
+            "displayName": "Citrouille ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_legendaire"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:fragment_legendaire"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#FCA401",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_mythique",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "7"
+            },
+            "displayName": "Citrouille ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_mythique"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:fragment_mythique"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#E42A2B",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          }
+        ]
+      },
+      "NETHER": {
+        "blocks": [
+          {
+            "id": "glowstone_vanilla",
+            "block": "minecraft:glowstone",
+            "properties": {},
+            "displayName": "Glowstone",
+            "item1": {
+              "item": "minecraft:glowstone"
+            },
+            "item2": [
+              {
+                "item": "minecraft:glowstone_dust"
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#A9794A",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_putrefiee_commun",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "8"
+            },
+            "displayName": "Citrouille Putréfiée ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_putrefiee_commun"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:ame_commun"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#40E10C",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_putrefiee_peu_commun",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "9"
+            },
+            "displayName": "Citrouille Putréfiée ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_putrefiee_peu_commun"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:ame_peu_commun"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#08D9EF",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_putrefiee_rare",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "10"
+            },
+            "displayName": "Citrouille Putréfiée ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_putrefiee_rare"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:ame_rare"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#0080D3",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_putrefiee_epic",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "11"
+            },
+            "displayName": "Citrouille Putréfiée ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_putrefiee_epic"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:ame_epic"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#9327F8",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_putrefiee_legendaire",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "12"
+            },
+            "displayName": "Citrouille Putréfiée ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_putrefiee_legendaire"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:ame_legendaire"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#FCA401",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "citrouille_putrefiee_mythique",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "13"
+            },
+            "displayName": "Citrouille Putréfiée ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:citrouille_putrefiee_mythique"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:ame_mythique"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#E42A2B",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          }
+        ]
+      },
+      "AETHER": {
+        "blocks": [
+          {
+            "id": "larme_seraphin",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "14"
+            },
+            "displayName": "Minerai de Séraphin",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_seraphin"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:seraphite_commun"
+                }
+              },
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:seraphite_peu_commun"
+                }
+              },
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:seraphite_rare"
+                }
+              },
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:seraphite_epic"
+                }
+              },
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:seraphite_legendaire"
+                }
+              },
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:seraphite_mythique"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#7463AB",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          }
+        ]
+      },
+      "WARDEN": {
+        "blocks": [
+          {
+            "id": "noeud_os",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "15"
+            },
+            "displayName": "Noeud d'os",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_noeud_os"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:noeud_os"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#40E10C",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "neurone",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "16"
+            },
+            "displayName": "Neurone",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_neurones"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:neurones"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#0080D3",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "chambre_coeur",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "17"
+            },
+            "displayName": "Chambre de coeur",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_chambres_coeur"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:chambres_coeur"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#9327F8",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "foyer_cri",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "18"
+            },
+            "displayName": "Foyer du cri",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_foyer_cri"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:foyer_cri"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#FCA401",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "noyau_sensoriel",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "19"
+            },
+            "displayName": "Noyau sensoriel",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_noyau_sensoriel"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:noyau_sensoriel"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#E42A2B",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          }
+        ]
+      },
+      "AQUATIQUE": {
+        "blocks": [
+          {
+            "id": "minerai_algue_commun",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "20"
+            },
+            "displayName": "Minerai d'algue ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_algue_commun"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:algue_commun"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#40E10C",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "minerai_algue_peu_commun",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "21"
+            },
+            "displayName": "Minerai d'algue ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_algue_peu_commun"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:algue_peu_commun"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#08D9EF",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "minerai_algue_rare",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "22"
+            },
+            "displayName": "Minerai d'algue ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_algue_rare"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:algue_rare"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#0080D3",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "minerai_algue_epic",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "23"
+            },
+            "displayName": "Minerai d'algue ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_algue_epic"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:algue_epic"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#9327F8",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "minerai_algue_legendaire",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "24"
+            },
+            "displayName": "Minerai d'algue ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_algue_legendaire"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:algue_legendaire"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#FCA401",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "minerai_algue_mythique",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "1"
+            },
+            "displayName": "Minerai d'algue ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:minerai_algue_mythique"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:algue_mythique"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#E42A2B",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  "autocrafter": {
+    "available": false,
+    "defaults": {
+      "enabled": false,
+      "delayMillis": 1000
+    },
+    "categories": {}
+  }
+}

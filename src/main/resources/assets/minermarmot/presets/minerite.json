@@ -1,0 +1,1886 @@
+{
+  "name": "Minerite",
+  "autoBoostBlockUpward": true,
+  "features": {
+    "autoMine": true,
+    "autoSprint": true,
+    "autoBoost": true,
+    "autoCameraLock": true,
+    "autoCenterBlock": true,
+    "autoFlightHeight": true,
+    "obstacleMiner": true,
+    "surfaceTargetMiner": false,
+    "worldBorder": true,
+    "miningWithoutDelay": true,
+    "placementWithoutDelay": true
+  },
+  "defaults": {
+    "enabled": [
+      "autoMine",
+      "autoSprint",
+      "autoCameraLock",
+      "autoCenterBlock",
+      "obstacleMiner"
+    ],
+    "worldBorderDistance": 0
+  },
+  "tnt": {
+    "builder": false,
+    "carpet": true,
+    "builderWandName": "",
+    "shulkerItem": "minecraft:red_shulker_box",
+    "shopClicks": [
+      "minecraft:red_shulker_box",
+      "minecraft:lime_stained_glass_pane"
+    ]
+  },
+  "playerAlerts": {
+    "inventoryFull": true,
+    "privateMessage": true,
+    "privateMessagePattern": "^\\[[^\\]]+ → toi\\]",
+    "defaults": {
+      "inventoryFull": true,
+      "inventoryFullSound": "minecraft:block.note_block.bell",
+      "inventoryFullVolume": 1.0,
+      "inventoryFullRepeat": 1,
+      "privateMessage": true,
+      "privateMessageSound": "minecraft:block.note_block.pling",
+      "privateMessageVolume": 1.0,
+      "privateMessageRepeat": 1
+    }
+  },
+  "blockAlerts": {
+    "available": true,
+    "sounds": true,
+    "waypoints": true,
+    "glow": true,
+    "defaults": {
+      "sounds": true,
+      "waypoints": true,
+      "glow": true,
+      "soundDelayTicks": 40,
+      "soundVolume": 1.0,
+      "displayedWaypointCount": 10,
+      "waypointDisplayDistance": 256,
+      "vanillaOreScanRadius": 16,
+      "otherBlockScanRadius": 16
+    },
+    "categories": {
+      "OVERWORLD": {
+        "blocks": [
+          {
+            "id": "diamant_vanilla",
+            "block": "minecraft:diamond_ore",
+            "properties": {},
+            "displayName": "Diamant",
+            "item1": {
+              "item": "minecraft:diamond_ore"
+            },
+            "item2": [
+              {
+                "item": "minecraft:diamond"
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#9C9CAA",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "emeraude_vanilla",
+            "block": "minecraft:emerald_ore",
+            "properties": {},
+            "displayName": "Emeraude",
+            "item1": {
+              "item": "minecraft:emerald_ore"
+            },
+            "item2": [
+              {
+                "item": "minecraft:emerald"
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#9C9CAA",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "peu_commun_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "9"
+            },
+            "displayName": "Minerai ꖋ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:peu_commun_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:peu_commun_ingot"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#00e664",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "rare_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "10"
+            },
+            "displayName": "Minerai ꖌ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:rare_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:rare_ingot"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#36e9f8",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "super_rare_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "11"
+            },
+            "displayName": "Minerai ꖍ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:super_rare_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:super_rare_ingot"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#004ce6",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "epique_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "12"
+            },
+            "displayName": "Minerai ꖎ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:epique_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:epique_ingot"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#de6d00",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "elite_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "13"
+            },
+            "displayName": "Minerai ꖏ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:elite_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:elite_ingot"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#f7c328",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          }
+        ]
+      },
+      "NETHER": {
+        "blocks": [
+          {
+            "id": "ancient_debris_vanilla",
+            "block": "minecraft:ancient_debris",
+            "properties": {},
+            "displayName": "Débris antiques",
+            "item1": {
+              "item": "minecraft:ancient_debris"
+            },
+            "item2": [
+              {
+                "item": "minecraft:netherite_scrap"
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#9C9CAA",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "ancient_debris_legendaire",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "4"
+            },
+            "displayName": "Débris antiques ꖐ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:ancient_debris_legendaire"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:legendaire_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#e9dc0f",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "ancient_debris_ultime",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "5"
+            },
+            "displayName": "Débris antiques ꖑ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:ancient_debris_ultime"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:ultime_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#c98700",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "ancient_debris_antique",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "6"
+            },
+            "displayName": "Débris antiques ꖒ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:ancient_debris_antique"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:antique_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#8a6c3c",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "ancient_debris_mythique",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "7"
+            },
+            "displayName": "Débris antiques ꖓ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:ancient_debris_mythique"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:mythique_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#a91b87",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "ancient_debris_ancestral",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "8"
+            },
+            "displayName": "Débris antiques ꖔ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:ancient_debris_ancestral"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:ancestral_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#d44a9c",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          }
+        ]
+      },
+      "END": {
+        "blocks": [
+          {
+            "id": "astrallyth_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "19"
+            },
+            "displayName": "Minerai d'Astrallyth",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:astrallyth_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:astrallyth_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#9C9CAA",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "excellyth_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "14"
+            },
+            "displayName": "Minerai d'Excellyth",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:excellyth_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:excellyth_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#623a5f",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "primordial_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "15"
+            },
+            "displayName": "Minerai ꖕ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:primordial_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:primordial_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#b26acd",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "astral_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "16"
+            },
+            "displayName": "Minerai ꖖ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:astral_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:astral_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#3f8fbe",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "celeste_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "17"
+            },
+            "displayName": "Minerai ꖗ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:celeste_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:celeste_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#c39b41",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "divin_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "18"
+            },
+            "displayName": "Minerai ꖘ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:divin_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:divin_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#f9effb",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          }
+        ]
+      },
+      "HEAVEN": {
+        "blocks": [
+          {
+            "id": "nebullyth_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "20"
+            },
+            "displayName": "Minerai de Nebullyth",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:nebullyth_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:nebullyth_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#d092b0",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "spectral_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "21"
+            },
+            "displayName": "Minerai ꖙ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:spectral_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:spectral_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#6c9eca",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "pulsar_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "22"
+            },
+            "displayName": "Minerai ꖚ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:pulsar_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:pulsar_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#814caf",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          },
+          {
+            "id": "void_ore",
+            "block": "minecraft:note_block",
+            "properties": {
+              "instrument": "basedrum",
+              "note": "23"
+            },
+            "displayName": "Minerai ꖛ",
+            "item1": {
+              "item": "minecraft:paper",
+              "components": {
+                "minecraft:item_model": "nexo:void_ore"
+              }
+            },
+            "item2": [
+              {
+                "item": "minecraft:paper",
+                "components": {
+                  "minecraft:item_model": "nexo:void_fragment"
+                }
+              }
+            ],
+            "defaults": {
+              "enabled": false,
+              "color": "#261946",
+              "sound": "",
+              "glow": false,
+              "surfaceMine": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  "portals": {
+    "defaults": {
+      "displayedWaypointCount": 3,
+      "waypointDisplayDistance": 256
+    },
+    "types": []
+  },
+  "autocrafter": {
+    "available": true,
+    "defaults": {
+      "enabled": true,
+      "delayMillis": 1000
+    },
+    "categories": {
+      "NETHER": [
+        {
+          "id": "netherite",
+          "displayName": "Lingot de Netherite",
+          "output": {
+            "item": "minecraft:netherite_ingot"
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:netherite_scrap"
+          },
+          "pattern": 1,
+          "item2": {
+            "item": "minecraft:gold_ingot"
+          }
+        },
+        {
+          "id": "legendaire",
+          "displayName": "Lingot de Netherite ꖐ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:legendaire_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:legendaire_fragment"
+            }
+          },
+          "pattern": 1,
+          "item2": {
+            "item": "minecraft:netherite_ingot"
+          }
+        },
+        {
+          "id": "ultime",
+          "displayName": "Lingot de Netherite ꖑ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:ultime_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:ultime_fragment"
+            }
+          },
+          "pattern": 1,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:legendaire_ingot"
+            }
+          }
+        },
+        {
+          "id": "antique",
+          "displayName": "Lingot de Netherite ꖒ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:antique_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:antique_fragment"
+            }
+          },
+          "pattern": 1,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:ultime_ingot"
+            }
+          }
+        },
+        {
+          "id": "mythique",
+          "displayName": "Lingot de Netherite ꖓ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:mythique_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:mythique_fragment"
+            }
+          },
+          "pattern": 1,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:antique_ingot"
+            }
+          }
+        },
+        {
+          "id": "ancestral",
+          "displayName": "Lingot de Netherite ꖔ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:ancestral_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:ancestral_fragment"
+            }
+          },
+          "pattern": 1,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:mythique_ingot"
+            }
+          }
+        }
+      ],
+      "END": [
+        {
+          "id": "astrallyth",
+          "displayName": "Lingot d'Astrallyth",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:astrallyth_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:astrallyth_fragment"
+            }
+          },
+          "pattern": 2
+        },
+        {
+          "id": "excellyth",
+          "displayName": "Lingot d'Excellyth",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:excellyth_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:excellyth_fragment"
+            }
+          },
+          "pattern": 1,
+          "item2": {
+            "item": "minecraft:gold_block"
+          }
+        },
+        {
+          "id": "primordial",
+          "displayName": "Lingot ꖕ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:primordial_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:primordial_fragment"
+            }
+          },
+          "pattern": 3,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:excellyth_ingot"
+            }
+          }
+        },
+        {
+          "id": "astral",
+          "displayName": "Lingot ꖖ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:astral_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:astral_fragment"
+            }
+          },
+          "pattern": 3,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:primordial_ingot"
+            }
+          }
+        },
+        {
+          "id": "celeste",
+          "displayName": "Lingot ꖗ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:celeste_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:celeste_fragment"
+            }
+          },
+          "pattern": 3,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:astral_ingot"
+            }
+          }
+        },
+        {
+          "id": "divin",
+          "displayName": "Lingot ꖘ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:divin_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:divin_fragment"
+            }
+          },
+          "pattern": 3,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:celeste_ingot"
+            }
+          }
+        }
+      ],
+      "HEAVEN": [
+        {
+          "id": "nebullyth",
+          "displayName": "Lingot de Nebullyth",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:nebullyth_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:nebullyth_fragment"
+            }
+          },
+          "pattern": 2
+        },
+        {
+          "id": "spectral",
+          "displayName": "Lingot ꖙ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:spectral_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:spectral_fragment"
+            }
+          },
+          "pattern": 4,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:nebullyth_ingot"
+            }
+          }
+        },
+        {
+          "id": "pulsar",
+          "displayName": "Lingot ꖚ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:pulsar_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:pulsar_fragment"
+            }
+          },
+          "pattern": 4,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:spectral_ingot"
+            }
+          }
+        },
+        {
+          "id": "void",
+          "displayName": "Lingot ꖛ",
+          "output": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:void_ingot"
+            }
+          },
+          "enabled": false,
+          "item1": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:void_fragment"
+            }
+          },
+          "pattern": 4,
+          "item2": {
+            "item": "minecraft:paper",
+            "components": {
+              "minecraft:item_model": "nexo:pulsar_ingot"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "skins": {
+    "itemName": "Pioche",
+    "skins": [
+      {
+        "itemModel": "nexo:skin_sakura_pickaxe",
+        "displayName": "Sakura Pickaxe"
+      },
+      {
+        "itemModel": "nexo:blackhole_weapon",
+        "displayName": "Blackhole Weapon"
+      },
+      {
+        "itemModel": "nexo:echoing_mace",
+        "displayName": "Echoing Mace"
+      },
+      {
+        "itemModel": "nexo:entropy_hammer",
+        "displayName": "Entropy Hammer"
+      },
+      {
+        "itemModel": "nexo:viperbone_wand",
+        "displayName": "Viperbone Wand"
+      },
+      {
+        "itemModel": "nexo:skin_amanite_pickaxe",
+        "displayName": "Amanita Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_blanc_fantome_pickaxe",
+        "displayName": "Ghost White Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_enderman_pickaxe",
+        "displayName": "Enderman Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_forge_pickaxe",
+        "displayName": "Forge Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_marguerite_pickaxe",
+        "displayName": "Daisy Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_mineur_pickaxe",
+        "displayName": "Miner Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_panda_pickaxe",
+        "displayName": "Panda Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_plasma_pickaxe",
+        "displayName": "Plasma Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_seraphin_pickaxe",
+        "displayName": "Seraph Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_terre_pickaxe",
+        "displayName": "Earth Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_abeille_pickaxe",
+        "displayName": "Bee Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_abysse_pickaxe",
+        "displayName": "Abyss Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_aigle_pickaxe",
+        "displayName": "Eagle Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_albinos_pickaxe",
+        "displayName": "Albino Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_amethyste_pickaxe",
+        "displayName": "Amethyst Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_amour_pickaxe",
+        "displayName": "Love Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_ancre_marine_pickaxe",
+        "displayName": "Sea Anchor Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_ange_pickaxe",
+        "displayName": "Angel Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_antimatiere_pickaxe",
+        "displayName": "Antimatter Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_araignee_pickaxe",
+        "displayName": "Spider Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_arc_en_ciel_pickaxe",
+        "displayName": "Rainbow Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_aurore_pickaxe",
+        "displayName": "Aurora Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_axolotl_pickaxe",
+        "displayName": "Axolotl Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_barbare_pickaxe",
+        "displayName": "Barbarian Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_basalte_pickaxe",
+        "displayName": "Basalt Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_basilic_pickaxe",
+        "displayName": "Basilisk Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_bioluminescent_pickaxe",
+        "displayName": "Bioluminescent Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_blanc_pur_pickaxe",
+        "displayName": "Pure White Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_bonbon_pickaxe",
+        "displayName": "Candy Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_braise_noire_pickaxe",
+        "displayName": "Black Ember Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_brise_glace_pickaxe",
+        "displayName": "Icebreaker Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_bronze_antique_pickaxe",
+        "displayName": "Ancient Bronze Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_bucheron_pickaxe",
+        "displayName": "Lumberjack Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_c_ur_brise_pickaxe",
+        "displayName": "Broken Heart Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_c_ur_d_or_pickaxe",
+        "displayName": "Heart of Gold Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_cactus_pickaxe",
+        "displayName": "Cactus Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_calmar_geant_pickaxe",
+        "displayName": "Giant Squid Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_camouflage_pickaxe",
+        "displayName": "Camouflage Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_cepe_pickaxe",
+        "displayName": "Porcini Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_cerf_pickaxe",
+        "displayName": "Stag Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_chantier_pickaxe",
+        "displayName": "Construction Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_chitine_doree_pickaxe",
+        "displayName": "Golden Chitin Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_chrome_pickaxe",
+        "displayName": "Chrome Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_circuit_pickaxe",
+        "displayName": "Circuit Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_citrouille_pickaxe",
+        "displayName": "Pumpkin Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_cobra_royal_pickaxe",
+        "displayName": "King Cobra Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_corail_pickaxe",
+        "displayName": "Coral Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_corbeau_pickaxe",
+        "displayName": "Raven Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_corsaire_pickaxe",
+        "displayName": "Corsair Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_coucher_de_soleil_pickaxe",
+        "displayName": "Sunset Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_creeper_pickaxe",
+        "displayName": "Creeper Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_cthulhu_pickaxe",
+        "displayName": "Cthulhu Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_cuivre_pickaxe",
+        "displayName": "Copper Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_cupidon_pickaxe",
+        "displayName": "Cupid Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_demon_aile_pickaxe",
+        "displayName": "Winged Demon Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_demon_pickaxe",
+        "displayName": "Demon Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_desert_pickaxe",
+        "displayName": "Desert Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_diablotin_pickaxe",
+        "displayName": "Imp Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_diamant_pickaxe",
+        "displayName": "Diamond Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_disco_pickaxe",
+        "displayName": "Disco Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_dracula_pickaxe",
+        "displayName": "Dracula Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_dragon_pickaxe",
+        "displayName": "Dragon Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_eclair_pickaxe",
+        "displayName": "Lightning Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_emeraude_brute_pickaxe",
+        "displayName": "Raw Emerald Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_end_pickaxe",
+        "displayName": "End Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_enfer_pickaxe",
+        "displayName": "Inferno Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_esprit_sylvestre_pickaxe",
+        "displayName": "Forest Spirit Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_faucheuse_pickaxe",
+        "displayName": "Grim Reaper Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_faux_spectrale_pickaxe",
+        "displayName": "Spectral Scythe Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_fee_pickaxe",
+        "displayName": "Fairy Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_feu_follet_pickaxe",
+        "displayName": "Will-o'-the-Wisp Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_flamant_pickaxe",
+        "displayName": "Flamingo Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_forgeron_pickaxe",
+        "displayName": "Blacksmith Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_fossile_pickaxe",
+        "displayName": "Fossil Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_foudre_pickaxe",
+        "displayName": "Thunderbolt Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_galaxie_pickaxe",
+        "displayName": "Galaxy Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_geode_pickaxe",
+        "displayName": "Geode Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_givre_noir_pickaxe",
+        "displayName": "Black Frost Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_givre_pickaxe",
+        "displayName": "Frost Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_glace_eternelle_pickaxe",
+        "displayName": "Eternal Ice Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_glace_pickaxe",
+        "displayName": "Ice Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_gourmand_pickaxe",
+        "displayName": "Sweet Tooth Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_hallebarde_pickaxe",
+        "displayName": "Halberd Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_hibou_pickaxe",
+        "displayName": "Owl Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_imperatrice_pickaxe",
+        "displayName": "Empress Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_ivoire_pickaxe",
+        "displayName": "Ivory Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_jade_pickaxe",
+        "displayName": "Jade Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_jungle_pickaxe",
+        "displayName": "Jungle Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_kraken_pickaxe",
+        "displayName": "Kraken Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_lame_de_lune_pickaxe",
+        "displayName": "Moonblade Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_laser_bleu_pickaxe",
+        "displayName": "Blue Laser Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_laser_rouge_pickaxe",
+        "displayName": "Red Laser Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_lave_pickaxe",
+        "displayName": "Lava Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_lotus_pickaxe",
+        "displayName": "Lotus Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_lune_pickaxe",
+        "displayName": "Moon Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_mage_pickaxe",
+        "displayName": "Mage Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_magma_pickaxe",
+        "displayName": "Magma Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_maillet_pickaxe",
+        "displayName": "Mallet Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_mante_pickaxe",
+        "displayName": "Mantis Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_mars_pickaxe",
+        "displayName": "Mars Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_marteau_de_guerre_pickaxe",
+        "displayName": "War Hammer Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_matrix_pickaxe",
+        "displayName": "Matrix Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_meduse_pickaxe",
+        "displayName": "Jellyfish Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_mjolnir_pickaxe",
+        "displayName": "Mjolnir Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_moisson_pickaxe",
+        "displayName": "Harvest Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_mousse_pickaxe",
+        "displayName": "Moss Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_nain_pickaxe",
+        "displayName": "Dwarf Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_neant_pickaxe",
+        "displayName": "Void Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_nebuleuse_pickaxe",
+        "displayName": "Nebula Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_necromancien_pickaxe",
+        "displayName": "Necromancer Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_neon_pickaxe",
+        "displayName": "Neon Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_nether_fongique_pickaxe",
+        "displayName": "Fungal Nether Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_nether_pickaxe",
+        "displayName": "Nether Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_noir_absolu_pickaxe",
+        "displayName": "Pitch Black Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_obsidienne_pickaxe",
+        "displayName": "Obsidian Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_ocean_pickaxe",
+        "displayName": "Ocean Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_oiseau_de_feu_pickaxe",
+        "displayName": "Firebird Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_ombre_pickaxe",
+        "displayName": "Shadow Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_onyx_pickaxe",
+        "displayName": "Onyx Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_or_massif_pickaxe",
+        "displayName": "Solid Gold Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_or_noir_pickaxe",
+        "displayName": "Black Gold Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_or_royal_pickaxe",
+        "displayName": "Royal Gold Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_orage_pickaxe",
+        "displayName": "Thunderstorm Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_os_calcine_pickaxe",
+        "displayName": "Charred Bone Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_os_de_dragon_pickaxe",
+        "displayName": "Dragon Bone Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_ossements_pickaxe",
+        "displayName": "Bones Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_paladin_pickaxe",
+        "displayName": "Paladin Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_pasteque_pickaxe",
+        "displayName": "Watermelon Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_perroquet_pickaxe",
+        "displayName": "Parrot Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_pharaon_pickaxe",
+        "displayName": "Pharaoh Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_phenix_pickaxe",
+        "displayName": "Phoenix Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_pic_vert_pickaxe",
+        "displayName": "Green Woodpecker Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_pompier_pickaxe",
+        "displayName": "Firefighter Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_poseidon_pickaxe",
+        "displayName": "Poseidon Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_poulpe_pickaxe",
+        "displayName": "Octopus Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_prisme_pickaxe",
+        "displayName": "Prism Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_quartz_pickaxe",
+        "displayName": "Quartz Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_radioactif_pickaxe",
+        "displayName": "Radioactive Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_redstone_pickaxe",
+        "displayName": "Redstone Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_reine_des_neiges_pickaxe",
+        "displayName": "Snow Queen Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_renne_de_noel_pickaxe",
+        "displayName": "Christmas Reindeer Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_requin_pickaxe",
+        "displayName": "Shark Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_rgb_gamer_pickaxe",
+        "displayName": "RGB Gamer Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_roi_liche_pickaxe",
+        "displayName": "Lich King Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_rose_gold_pickaxe",
+        "displayName": "Rose Gold Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_rose_pickaxe",
+        "displayName": "Rose Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_rouille_pickaxe",
+        "displayName": "Rust Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_royale_pickaxe",
+        "displayName": "Royal Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_rubis_pickaxe",
+        "displayName": "Ruby Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_rustique_pickaxe",
+        "displayName": "Rustic Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_sang_lunaire_pickaxe",
+        "displayName": "Moonblood Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_sang_pickaxe",
+        "displayName": "Blood Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_saphir_pickaxe",
+        "displayName": "Sapphire Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_saturne_pickaxe",
+        "displayName": "Saturn Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_scarabee_pickaxe",
+        "displayName": "Scarab Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_sceptre_royal_pickaxe",
+        "displayName": "Royal Scepter Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_sculk_pickaxe",
+        "displayName": "Sculk Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_selenite_pickaxe",
+        "displayName": "Selenite Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_serpent_corail_pickaxe",
+        "displayName": "Coral Snake Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_slime_pickaxe",
+        "displayName": "Slime Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_solaire_pickaxe",
+        "displayName": "Solar Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_spectre_lumineux_pickaxe",
+        "displayName": "Radiant Specter Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_spectre_nocturne_pickaxe",
+        "displayName": "Night Specter Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_spectre_vert_pickaxe",
+        "displayName": "Green Specter Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_squelette_pickaxe",
+        "displayName": "Skeleton Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_sucre_dorge_pickaxe",
+        "displayName": "Candy Cane Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_surtension_pickaxe",
+        "displayName": "Power Surge Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_tempete_pickaxe",
+        "displayName": "Storm Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_tigre_pickaxe",
+        "displayName": "Tiger Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_titan_pickaxe",
+        "displayName": "Titan Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_tonnerre_bleu_pickaxe",
+        "displayName": "Blue Thunder Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_toucan_pickaxe",
+        "displayName": "Toucan Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_tournesol_pickaxe",
+        "displayName": "Sunflower Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_toxique_pickaxe",
+        "displayName": "Toxic Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_triton_pickaxe",
+        "displayName": "Triton Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_vampire_pickaxe",
+        "displayName": "Vampire Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_vaporwave_pickaxe",
+        "displayName": "Vaporwave Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_vert_de_gris_pickaxe",
+        "displayName": "Verdigris Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_viking_pickaxe",
+        "displayName": "Viking Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_vipere_pickaxe",
+        "displayName": "Viper Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_wendigo_pickaxe",
+        "displayName": "Wendigo Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_wither_pickaxe",
+        "displayName": "Wither Pickaxe"
+      },
+      {
+        "itemModel": "nexo:skin_zebre_pickaxe",
+        "displayName": "Zebra Pickaxe"
+      }
+    ]
+  }
+}

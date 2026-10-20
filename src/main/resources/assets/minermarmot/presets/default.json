@@ -1,0 +1,169 @@
+{
+  "name": "Default",
+  "autoBoostBlockUpward": false,
+  "features": {
+    "autoMine": true,
+    "autoSprint": true,
+    "autoBoost": true,
+    "autoCameraLock": true,
+    "autoCenterBlock": true,
+    "autoFlightHeight": true,
+    "obstacleMiner": true,
+    "surfaceTargetMiner": true,
+    "worldBorder": true,
+    "miningWithoutDelay": true,
+    "placementWithoutDelay": true
+  },
+  "defaults": {
+    "enabled": [
+      "autoMine",
+      "autoSprint",
+      "autoCameraLock",
+      "autoCenterBlock",
+      "obstacleMiner"
+    ],
+    "worldBorderDistance": 0
+  },
+  "tnt": {
+    "builder": false,
+    "carpet": true,
+    "builderWandName": "",
+    "shulkerItem": "minecraft:red_shulker_box",
+    "shopClicks": []
+  },
+  "playerAlerts": {
+    "inventoryFull": true,
+    "privateMessage": false,
+    "privateMessagePattern": "",
+    "defaults": {
+      "inventoryFull": true,
+      "inventoryFullSound": "minecraft:block.note_block.bell",
+      "inventoryFullVolume": 1.0,
+      "inventoryFullRepeat": 1,
+      "privateMessage": true,
+      "privateMessageSound": "minecraft:block.note_block.pling",
+      "privateMessageVolume": 1.0,
+      "privateMessageRepeat": 1
+    }
+  },
+  "blockAlerts": {
+    "available": true,
+    "sounds": true,
+    "waypoints": true,
+    "glow": true,
+    "defaults": {
+      "sounds": true,
+      "waypoints": true,
+      "glow": true,
+      "soundDelayTicks": 40,
+      "soundVolume": 1.0,
+      "displayedWaypointCount": 10,
+      "waypointDisplayDistance": 256,
+      "vanillaOreScanRadius": 16,
+      "otherBlockScanRadius": 16
+    },
+    "categories": {
+      "OVERWORLD": {
+        "blocks": [
+          {
+            "id": "minecraft:diamond_ore",
+            "block": "minecraft:diamond_ore",
+            "properties": {},
+            "displayName": "Diamond Ore",
+            "item1": {
+              "item": "minecraft:diamond_ore"
+            },
+            "item2": [],
+            "defaults": {
+              "enabled": true,
+              "color": "#55FFFF",
+              "sound": "minecraft:block.note_block.pling",
+              "glow": false,
+              "surfaceMine": true
+            }
+          },
+          {
+            "id": "minecraft:deepslate_diamond_ore",
+            "block": "minecraft:deepslate_diamond_ore",
+            "properties": {},
+            "displayName": "Deepslate Diamond Ore",
+            "item1": {
+              "item": "minecraft:deepslate_diamond_ore"
+            },
+            "item2": [],
+            "defaults": {
+              "enabled": true,
+              "color": "#55FFFF",
+              "sound": "minecraft:block.note_block.pling",
+              "glow": false,
+              "surfaceMine": true
+            }
+          },
+          {
+            "id": "minecraft:emerald_ore",
+            "block": "minecraft:emerald_ore",
+            "properties": {},
+            "displayName": "Emerald Ore",
+            "item1": {
+              "item": "minecraft:emerald_ore"
+            },
+            "item2": [],
+            "defaults": {
+              "enabled": true,
+              "color": "#55FF55",
+              "sound": "minecraft:block.note_block.pling",
+              "glow": false,
+              "surfaceMine": true
+            }
+          },
+          {
+            "id": "minecraft:deepslate_emerald_ore",
+            "block": "minecraft:deepslate_emerald_ore",
+            "properties": {},
+            "displayName": "Deepslate Emerald Ore",
+            "item1": {
+              "item": "minecraft:deepslate_emerald_ore"
+            },
+            "item2": [],
+            "defaults": {
+              "enabled": true,
+              "color": "#55FF55",
+              "sound": "minecraft:block.note_block.pling",
+              "glow": false,
+              "surfaceMine": true
+            }
+          }
+        ]
+      },
+      "NETHER": {
+        "blocks": [
+          {
+            "id": "minecraft:ancient_debris",
+            "block": "minecraft:ancient_debris",
+            "properties": {},
+            "displayName": "Ancient Debris",
+            "item1": {
+              "item": "minecraft:ancient_debris"
+            },
+            "item2": [],
+            "defaults": {
+              "enabled": true,
+              "color": "#AA6633",
+              "sound": "minecraft:block.note_block.pling",
+              "glow": false,
+              "surfaceMine": true
+            }
+          }
+        ]
+      }
+    }
+  },
+  "autocrafter": {
+    "available": false,
+    "defaults": {
+      "enabled": false,
+      "delayMillis": 1000
+    },
+    "categories": {}
+  }
+}

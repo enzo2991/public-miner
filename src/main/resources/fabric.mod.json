@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "minermarmot",
+	"version": "${version}",
+	"name": "Miner Marmot",
+	"description": "An optimized Minecraft utility mod featuring AutoMine, AutoRun, waypoints, and customizable alerts to enhance your gameplay experience",
+	"authors": [
+		"Enzo2991",
+		"PatrickEDM"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/minermarmot/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.minermarmot.Main"
+		],
+		"client": [
+			"com.minermarmot.client.minermarmotClient"
+		],
+		"modmenu": [
+			"com.minermarmot.client.integration.ModMenuIntegration"
+		]
+	},
+	"mixins": [
+		{
+			"config": "minermarmot.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.5",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
