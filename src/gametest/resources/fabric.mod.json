@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "minermarmot-test",
+  "version": "1.0.0",
+  "name": "MinerMarmot client tests",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": [
+      "com.minermarmot.client.screen.ConfigKeyClientTest",
+      "com.minermarmot.client.features.mining.PlacementClientTest",
+      "com.minermarmot.client.features.mining.MiningClientTest",
+      "com.minermarmot.client.features.alerts.BlockAlertsClientTest",
+      "com.minermarmot.client.features.alerts.BlockAlertRecoveryClientTest",
+      "com.minermarmot.client.features.alerts.PlayerAlertsClientTest",
+      "com.minermarmot.client.features.alerts.AlertVolumeClientTest",
+      "com.minermarmot.client.features.tnt.TntClientTest",
+      "com.minermarmot.client.features.display.DisplayClientTest",
+      "com.minermarmot.client.features.portal.PortalClientTest",
+      "com.minermarmot.client.features.autocraft.AutocraftClientTest",
+      "com.minermarmot.client.features.skins.SkinsClientTest"
+    ]
+  }
+}
