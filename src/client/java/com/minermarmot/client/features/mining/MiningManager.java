@@ -140,6 +140,9 @@ public final class MiningManager {
     }
 
     private void startTick(Minecraft client) {
+        if (client.gameMode != null && enabled(MiningFeature.MINING_WITHOUT_DELAY)) {
+            client.gameMode.destroyDelay = 0;
+        }
         while (toggleKey.consumeClick()) {
             if (!(client.gui.screen() instanceof ChatScreen)) toggle();
         }
@@ -226,6 +229,7 @@ public final class MiningManager {
             }
             // A single controller preserves vanilla break progress across all mining actions.
             target = hit.getBlockPos().immutable();
+            if (enabled(MiningFeature.MINING_WITHOUT_DELAY)) client.gameMode.destroyDelay = 0;
             if (client.gameMode.continueDestroyBlock(target, hit.getDirection())) {
                 client.level.addBreakingBlockEffect(target, hit.getDirection());
                 client.player.swing(InteractionHand.MAIN_HAND);

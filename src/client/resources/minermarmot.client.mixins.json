@@ -6,7 +6,6 @@
     "KeyboardInputMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
-    "MultiPlayerGameModeMixin",
     "EntityMixin",
     "GuiMixin",
     "ClientPacketListenerMixin",
