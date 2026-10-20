@@ -1,5 +1,7 @@
 package com.minermarmot.client.features.tnt;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.client.minermarmotClient;
 import com.minermarmot.client.config.ConfigManager;
 import com.minermarmot.client.features.mining.MiningManager;
@@ -94,7 +96,7 @@ public final class TntManager {
     public static void worldChanged() { stop(Minecraft.getInstance(), null); }
 
     private static boolean canAct(Minecraft client) {
-        return client.player != null && client.level != null && client.gameMode != null && client.player.isAlive()
+        return VersionCheck.isCompatible() && client.player != null && client.level != null && client.gameMode != null && client.player.isAlive()
                 && !client.player.isSpectator() && !client.player.isPassenger() && !client.player.isSleeping();
     }
 
@@ -189,6 +191,10 @@ public final class TntManager {
         if (active == value) return;
         if (!value) {
             stop(client, "stopped");
+            return;
+        }
+        if (!VersionCheck.isCompatible()) {
+            client.setScreenAndShow(VersionCheck.configScreen(client.gui.screen()));
             return;
         }
         if (!canAct(client)) return;

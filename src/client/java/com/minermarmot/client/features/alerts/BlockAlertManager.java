@@ -1,5 +1,7 @@
 package com.minermarmot.client.features.alerts;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.client.config.ConfigManager;
 import com.minermarmot.client.features.mining.MiningFeature;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
@@ -110,6 +112,7 @@ public final class BlockAlertManager {
 
     private void tick(Minecraft client) {
         setLevel(client.level);
+        if (!VersionCheck.isCompatible()) { resetDiscoveries(); return; }
         if (level == null || client.player == null) {
             return;
         }
@@ -314,7 +317,7 @@ public final class BlockAlertManager {
     }
 
     public static BlockAlertsPreset surfacePreset() {
-        if (!alertPreset().available || !ConfigManager.preset(ConfigManager.current().preset).allows(MiningFeature.SURFACE_TARGET_MINER)) {
+        if (!VersionCheck.isCompatible() || !alertPreset().available || !ConfigManager.preset(ConfigManager.current().preset).allows(MiningFeature.SURFACE_TARGET_MINER)) {
             return null;
         }
         return alertPreset();
@@ -332,7 +335,7 @@ public final class BlockAlertManager {
 
     static List<Waypoint> updateVisibility(Minecraft client) {
         INSTANCE.setLevel(client.level);
-        if (client.level == null || client.player == null || !alertPreset().available) {
+        if (!VersionCheck.isCompatible() || client.level == null || client.player == null || !alertPreset().available) {
             INSTANCE.visible = List.of();
             return INSTANCE.visible;
         }
@@ -405,7 +408,7 @@ public final class BlockAlertManager {
     // Glow must use discoveries, independently of extensions to waypoint output.
     static List<Waypoint> discoveredWaypoints() {
         INSTANCE.synchronizeTargets();
-        if (!alertPreset().available) {
+        if (!VersionCheck.isCompatible() || !alertPreset().available) {
             return List.of();
         }
         INSTANCE.synchronizeScanArea(Minecraft.getInstance());

@@ -1,5 +1,7 @@
 package com.minermarmot.client.features.autocraft;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.Main;
 import com.minermarmot.client.config.ConfigManager;
 import com.minermarmot.client.features.tnt.TntManager;
@@ -79,7 +81,7 @@ public final class AutocraftManager {
 
     private static boolean allowed(Minecraft client) {
         var config = ConfigManager.current();
-        return config != null && config.autocrafter != null && config.autocrafter.enabled
+        return VersionCheck.isCompatible() && config != null && config.autocrafter != null && config.autocrafter.enabled
                 && ConfigManager.preset(config.preset).autocrafter.available
                 && client.player != null && client.level != null && client.gameMode != null
                 && client.player.isAlive() && !client.player.isSpectator() && !client.player.isSleeping()

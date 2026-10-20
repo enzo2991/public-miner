@@ -1,5 +1,7 @@
 package com.minermarmot.client.features.mining;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.client.features.tnt.TntManager;
 import com.minermarmot.client.minermarmotClient;
 import com.minermarmot.client.config.ConfigManager;
@@ -80,6 +82,11 @@ public final class MiningManager {
 
     public static void toggle() {
         Minecraft client = Minecraft.getInstance();
+        if (!VersionCheck.isCompatible()) {
+            INSTANCE.stop(client);
+            client.setScreenAndShow(VersionCheck.configScreen(client.gui.screen()));
+            return;
+        }
         if (INSTANCE.running) {
             INSTANCE.stop(client);
         } else if (canAct(client) && ConfigManager.presets().get(ConfigManager.current().preset).features.containsValue(true)) {
@@ -105,7 +112,7 @@ public final class MiningManager {
     }
 
     public static boolean enabled(MiningFeature feature) {
-        if (ConfigManager.current() == null) {
+        if (!VersionCheck.isCompatible() || ConfigManager.current() == null) {
             return false;
         }
         var settings = ConfigManager.current();
@@ -136,7 +143,7 @@ public final class MiningManager {
     }
 
     private static boolean canAct(Minecraft client) {
-        return client.player != null && client.level != null && client.gameMode != null && client.player.isAlive() && !client.player.isSpectator()  && !client.player.isPassenger() && !client.player.isSleeping();
+        return VersionCheck.isCompatible() && client.player != null && client.level != null && client.gameMode != null && client.player.isAlive() && !client.player.isSpectator()  && !client.player.isPassenger() && !client.player.isSleeping();
     }
 
     private void startTick(Minecraft client) {

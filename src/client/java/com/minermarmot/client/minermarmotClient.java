@@ -1,6 +1,7 @@
 package com.minermarmot.client;
 
 import com.minermarmot.Main;
+import com.minermarmot.client.integration.VersionCheck;
 import com.minermarmot.client.features.tnt.TntManager;
 import com.minermarmot.client.features.display.DisplayRenderer;
 import com.minermarmot.client.features.autocraft.AutocraftManager;
@@ -9,7 +10,6 @@ import com.minermarmot.client.features.mining.MiningManager;
 import com.minermarmot.client.features.alerts.BlockAlertManager;
 import com.minermarmot.client.features.alerts.PlayerAlertManager;
 import com.minermarmot.client.features.portal.PortalManager;
-import com.minermarmot.client.screen.ConfigScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
@@ -22,6 +22,7 @@ public class minermarmotClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ConfigManager.initialize();
+        VersionCheck.initialize();
         MiningManager.initialize();
         BlockAlertManager.initialize();
         PortalManager.initialize();
@@ -34,7 +35,7 @@ public class minermarmotClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (openConfigKey.consumeClick()) {
                 if (client.player != null && client.gui.screen() == null) {
-                    client.setScreenAndShow(new ConfigScreen(null));
+                    client.setScreenAndShow(VersionCheck.configScreen(null));
                 }
             }
         });

@@ -1,5 +1,7 @@
 package com.minermarmot.client.screen;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.client.features.tnt.TntManager;
 import com.minermarmot.client.config.ClientConfig;
 import com.minermarmot.client.config.ConfigManager;
@@ -101,6 +103,11 @@ public class ConfigScreen extends ConfigMenuScreen {
                 .bounds((width - buttonWidth) / 2, height - 28, buttonWidth, 20).build());
     }
 
+
+    @Override
+    public void tick() {
+        if (!VersionCheck.isCompatible()) minecraft.setScreenAndShow(VersionCheck.configScreen(parent));
+    }
 
     private void addTab(String id, int x, int tabWidth) {
         Button tab = Button.builder(text(id), button -> {

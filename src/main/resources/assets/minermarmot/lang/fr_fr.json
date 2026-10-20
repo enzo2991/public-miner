@@ -1,4 +1,12 @@
 {
+  "minermarmot.version.title": "Version de MinerMarmot",
+  "minermarmot.version.retry": "Vérifier à nouveau",
+  "minermarmot.version.installed": "Version installée : %s",
+  "minermarmot.version.required": "Version requise : %s",
+  "minermarmot.version.checking": "Vérification de la version requise...",
+  "minermarmot.version.outdated": "Utilise la version requise de MinerMarmot. Ses fonctions sont désactivées ; Minecraft reste jouable.",
+  "minermarmot.version.unavailable": "Impossible de vérifier la version requise. MinerMarmot est désactivé. Vérifie ta connexion et réessaie.",
+  "minermarmot.version.compatible": "Version confirmée.",
   "key.minermarmot.toggleMining": "Démarrer / arrêter le minage",
   "key.category.minermarmot.main": "MinerMarmot",
   "key.minermarmot.openConfig": "Ouvrir la configuration",

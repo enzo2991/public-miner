@@ -1,5 +1,7 @@
 package com.minermarmot.client.features.alerts;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.client.config.ConfigManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
@@ -74,11 +76,12 @@ public final class PlayerAlertManager {
 
     private static boolean inventoryEnabled() {
         var config = ConfigManager.current();
-        return ConfigManager.preset(config.preset).playerAlerts.inventoryFull && config.playerAlerts.inventoryFull;
+        return VersionCheck.isCompatible() && ConfigManager.preset(config.preset).playerAlerts.inventoryFull && config.playerAlerts.inventoryFull;
     }
 
     private void tick(Minecraft client) {
         updateContext(client);
+        if (!VersionCheck.isCompatible()) { worldChanged(); return; }
         if (player == null || level == null || player.isDeadOrDying()) {
             repetitions.clear();
         } else {
@@ -131,7 +134,7 @@ public final class PlayerAlertManager {
     private static void privateMessage(Component message) {
         Minecraft client = Minecraft.getInstance();
         var config = ConfigManager.current();
-        if (client.player != null && client.level != null && !client.player.isDeadOrDying() && config.playerAlerts.privateMessage
+        if (VersionCheck.isCompatible() && client.player != null && client.level != null && !client.player.isDeadOrDying() && config.playerAlerts.privateMessage
                 && ConfigManager.preset(config.preset).playerAlerts.matchesPrivateMessage(ChatFormatting.stripFormatting(message.getString()))) {
             INSTANCE.updateContext(client);
             INSTANCE.notifyPlayer(client, "privateMessage", config.playerAlerts.privateMessageSound,

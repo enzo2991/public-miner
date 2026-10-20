@@ -1,5 +1,7 @@
 package com.minermarmot.client.features.display;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.Main;
 import com.minermarmot.client.config.ConfigManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -29,7 +31,7 @@ public final class DisplayRenderer {
 
     static void updateObjectives(Minecraft client) {
         objectiveLines = List.of();
-        if (client.player == null || client.level == null || !ConfigManager.current().displayObjectives) return;
+        if (!VersionCheck.isCompatible() || client.player == null || client.level == null || !ConfigManager.current().displayObjectives) return;
         objectiveLines = objectives(client.player.getMainHandItem());
         if (objectiveLines.isEmpty()) objectiveLines = objectives(client.player.getOffhandItem());
         for (int slot = 0; objectiveLines.isEmpty() && slot < client.player.getInventory().getContainerSize(); slot++) {
@@ -60,7 +62,7 @@ public final class DisplayRenderer {
 
     static void render(GuiGraphicsExtractor graphics) {
         Minecraft client = Minecraft.getInstance();
-        if (client.player == null || client.level == null) {
+        if (!VersionCheck.isCompatible() || client.player == null || client.level == null) {
             return;
         }
         var config = ConfigManager.current();

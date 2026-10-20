@@ -1,5 +1,7 @@
 package com.minermarmot.client.mixin;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.client.config.ConfigManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemModelResolver;
@@ -27,7 +29,7 @@ public abstract class ItemModelResolverMixin {
     private Identifier minermarmot$skinModel(Identifier original, ItemStackRenderState output, ItemStack stack,
                                           ItemDisplayContext context, Level level, ItemOwner owner, int seed) {
         var config = ConfigManager.current();
-        if (config == null) return original;
+        if (!VersionCheck.isCompatible() || config == null) return original;
         var preset = ConfigManager.preset(config.preset);
         if (preset == null) return original;
         Identifier selected = preset.skins.modelFor(stack, config.skinSelections.get(config.preset));

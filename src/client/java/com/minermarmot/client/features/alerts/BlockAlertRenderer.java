@@ -1,5 +1,7 @@
 package com.minermarmot.client.features.alerts;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.Main;
 import com.minermarmot.client.config.ConfigManager;
 import com.minermarmot.client.features.portal.PortalRenderer;
@@ -64,7 +66,7 @@ public final class BlockAlertRenderer {
 
     private static void collect(LevelRenderContext context) {
         List<GlowState> states = glows;
-        if (states.isEmpty() || states.getFirst().hiddenEdges) {
+        if (!VersionCheck.isCompatible() || states.isEmpty() || states.getFirst().hiddenEdges) {
             return;
         }
         PoseStack poses = context.poseStack();
@@ -106,7 +108,7 @@ public final class BlockAlertRenderer {
     // HUD geometry is drawn after shader composition, so hidden edges survive world post-processing.
     private static void renderGlowOverlay(GuiGraphicsExtractor graphics) {
         Minecraft client = Minecraft.getInstance();
-        if (client.level == null || client.player == null || glows.isEmpty()) return;
+        if (!VersionCheck.isCompatible() || client.level == null || client.player == null || glows.isEmpty()) return;
         var camera = client.gameRenderer.mainCamera();
         Matrix4f projection = camera.getViewRotationProjectionMatrix(new Matrix4f());
         Vec3 origin = camera.position();
@@ -171,7 +173,7 @@ public final class BlockAlertRenderer {
 
     private static int renderWaypoints(GuiGraphicsExtractor graphics) {
         Minecraft client = Minecraft.getInstance();
-        if (client.player == null || client.level == null) {
+        if (!VersionCheck.isCompatible() || client.player == null || client.level == null) {
             return 8;
         }
         var preset = ConfigManager.preset(ConfigManager.current().preset).blockAlerts;

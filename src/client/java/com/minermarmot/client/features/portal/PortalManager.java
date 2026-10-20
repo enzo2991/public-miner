@@ -1,5 +1,7 @@
 package com.minermarmot.client.features.portal;
 
+import com.minermarmot.client.integration.VersionCheck;
+
 import com.minermarmot.client.config.ConfigManager;
 import com.minermarmot.client.features.alerts.BlockAlertManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
@@ -87,7 +89,7 @@ public final class PortalManager {
             chunks.keySet().forEach(this::queue);
             visibilityTick = Long.MIN_VALUE;
         }
-        if (level == null || client.player == null) return;
+        if (!VersionCheck.isCompatible() || level == null || client.player == null) return;
         for (int budget = 2; budget > 0 && !pending.isEmpty(); budget--) {
             long key = pending.remove();
             queued.remove(key);
@@ -132,7 +134,7 @@ public final class PortalManager {
     }
 
     private void discover(Minecraft client) {
-        if (client.level == null || client.player == null || client.level != level
+        if (!VersionCheck.isCompatible() || client.level == null || client.player == null || client.level != level
                 || !Objects.equals(preset, ConfigManager.current().preset)) return;
         long now = level.getGameTime();
         if (visibilityTick != Long.MIN_VALUE && now - visibilityTick < 5) return;
@@ -176,7 +178,7 @@ public final class PortalManager {
 
     public static List<Waypoint> waypoints(Vec3 player) {
         Minecraft client = Minecraft.getInstance();
-        if (client.level == null) return List.of();
+        if (!VersionCheck.isCompatible() || client.level == null) return List.of();
         var config = ConfigManager.current();
         return INSTANCE.discovered.entrySet().stream()
                 .filter(entry -> entry.getKey().preset.equals(config.preset)

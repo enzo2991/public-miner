@@ -1,10 +1,9 @@
 package com.minermarmot.client.integration;
 
-import com.minermarmot.client.screen.ConfigScreen;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
 public class ModMenuIntegration implements ModMenuApi {
     @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {return ConfigScreen::new;}
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {return VersionCheck::configScreen;}
 }
