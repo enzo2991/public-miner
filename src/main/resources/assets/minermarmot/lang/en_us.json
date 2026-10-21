@@ -37,7 +37,6 @@
     "minermarmot.mining.autoFlightHeight": "Auto Flight Height",
     "minermarmot.mining.obstacleMiner": "Obstacle mining",
     "minermarmot.mining.worldBorder": "World border spacing",
-    "minermarmot.mining.miningWithoutDelay": "Mining without delay",
     "minermarmot.mining.placementWithoutDelay": "Placement without delay",
     "minermarmot.tnt.placementWithoutDelayHint": "Removes the delay between right clicks and speeds up Auto Boost. Item and server cooldowns still apply.",
     "minermarmot.mining.started": "MinerMarmot: mining started",

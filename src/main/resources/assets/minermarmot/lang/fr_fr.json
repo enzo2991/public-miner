@@ -37,7 +37,6 @@
     "minermarmot.mining.autoFlightHeight": "Hauteur de vol automatique",
     "minermarmot.mining.obstacleMiner": "Minage des obstacles",
     "minermarmot.mining.worldBorder": "Écart à la bordure du monde",
-    "minermarmot.mining.miningWithoutDelay": "Minage sans délai",
     "minermarmot.mining.placementWithoutDelay": "Pose sans délai",
     "minermarmot.tnt.placementWithoutDelayHint": "Supprime le délai entre les clics droits et accélère le Boost automatique. Les délais des objets et du serveur restent appliqués.",
     "minermarmot.mining.started": "MinerMarmot : minage démarré",

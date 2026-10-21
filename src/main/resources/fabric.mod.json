@@ -26,7 +26,6 @@
 			"com.minermarmot.client.integration.ModMenuIntegration"
 		]
 	},
-	"accessWidener": "minermarmot.classtweaker",
 	"mixins": [
 		{
 			"config": "minermarmot.client.mixins.json",

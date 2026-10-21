@@ -10,7 +10,6 @@
         "autoFlightHeight": true,
         "obstacleMiner": true,
         "worldBorder": true,
-        "miningWithoutDelay": true,
         "placementWithoutDelay": true
     },
     "defaults": {

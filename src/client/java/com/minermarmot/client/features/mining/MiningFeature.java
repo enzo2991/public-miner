@@ -11,7 +11,6 @@ public enum MiningFeature {
     @SerializedName("autoFlightHeight") AUTO_FLIGHT_HEIGHT("autoFlightHeight"),
     @SerializedName("obstacleMiner") OBSTACLE_MINER("obstacleMiner"),
     @SerializedName("worldBorder") WORLD_BORDER("worldBorder"),
-    @SerializedName("miningWithoutDelay") MINING_WITHOUT_DELAY("miningWithoutDelay"),
     @SerializedName("placementWithoutDelay") PLACEMENT_WITHOUT_DELAY("placementWithoutDelay");
 
     private final String id;

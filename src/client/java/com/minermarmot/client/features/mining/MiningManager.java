@@ -25,7 +25,6 @@ import org.lwjgl.glfw.GLFW;
 
 public final class MiningManager {
     private static final MiningManager INSTANCE = new MiningManager();
-    private static final int MAX_BREAKS_PER_TICK = 8;
 
     private final ObstacleMinerManager obstacles = new ObstacleMinerManager();
     private final WorldBorderManager border = new WorldBorderManager();
@@ -146,9 +145,6 @@ public final class MiningManager {
     }
 
     private void startTick(Minecraft client) {
-        if (client.gameMode != null && enabled(MiningFeature.MINING_WITHOUT_DELAY)) {
-            client.gameMode.destroyDelay = 0;
-        }
         while (toggleKey.consumeClick()) {
             if (!(client.gui.screen() instanceof ChatScreen)) toggle();
         }
@@ -225,35 +221,29 @@ public final class MiningManager {
             return;
         }
         BlockHitResult crosshair = MiningTargets.crosshair(client);
-        int attempts = enabled(MiningFeature.AUTO_MINE) && enabled(MiningFeature.MINING_WITHOUT_DELAY)
-                ? MAX_BREAKS_PER_TICK : 1;
-        for (int attempt = 0; attempt < attempts; attempt++) {
-            BlockHitResult hit = findTarget(client, crosshair);
-            if (hit == null || client.player.isUsingItem() || stopMovement) {
-                stopBreaking(client);
-                break;
-            }
-            // A single controller preserves vanilla break progress across all mining actions.
-            target = hit.getBlockPos().immutable();
-            if (enabled(MiningFeature.MINING_WITHOUT_DELAY)) client.gameMode.destroyDelay = 0;
-            if (client.gameMode.continueDestroyBlock(target, hit.getDirection())) {
-                client.level.addBreakingBlockEffect(target, hit.getDirection());
-                client.player.swing(InteractionHand.MAIN_HAND);
-            }
-            // Retry only after removal; a resistant block must progress at most once per tick.
-            if (!client.level.getBlockState(target).isAir() || attempt + 1 == attempts) {
-                break;
-            }
-            crosshair = MiningTargets.crosshair(client);
-        }
+        mineBlock(client, crosshair);
         if (boostCooldown > 0) {
             boostCooldown--;
         }
-        if (enabled(MiningFeature.AUTO_BOOST) && crosshair == null && target == null
+        if (enabled(MiningFeature.AUTO_BOOST) && target == null && MiningTargets.crosshair(client) == null
                 && (boostCooldown == 0 || enabled(MiningFeature.PLACEMENT_WITHOUT_DELAY))
                 && !client.player.isUsingItem() && !stopMovement) {
             boostCooldown = 4;
             useItem(client);
+        }
+    }
+
+    private void mineBlock(Minecraft client, BlockHitResult crosshair) {
+        BlockHitResult hit = findTarget(client, crosshair);
+        if (hit == null || client.player.isUsingItem() || stopMovement) {
+            stopBreaking(client);
+            return;
+        }
+        // A single controller preserves vanilla break progress across all mining actions.
+        target = hit.getBlockPos().immutable();
+        if (client.gameMode.continueDestroyBlock(target, hit.getDirection())) {
+            client.level.addBreakingBlockEffect(target, hit.getDirection());
+            client.player.swing(InteractionHand.MAIN_HAND);
         }
     }
 
