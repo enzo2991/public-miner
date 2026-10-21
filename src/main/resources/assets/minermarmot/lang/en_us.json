@@ -92,5 +92,6 @@
     "minermarmot.portal.waypointCount": "Portal waypoint count",
     "minermarmot.portal.waypointDistance": "Portal display distance",
     "minermarmot.portal.reset": "Reset discovered portals",
-    "minermarmot.portal.topWaypoints": "Top %s portals"
+    "minermarmot.portal.topWaypoints": "Top %s portals",
+    "minermarmot.config.autoBoostInterval": "Interval between boosts (ms)"
 }

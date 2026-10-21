@@ -34,7 +34,7 @@ public final class MiningManager {
     private boolean sprinting;
     private Float lockedYaw;
     private Double lockedFlightHeight;
-    private int boostCooldown;
+    private int boostElapsedTicks = Integer.MAX_VALUE;
     private BlockPos target;
     private ClientLevel level;
     private LocalPlayer player;
@@ -72,7 +72,7 @@ public final class MiningManager {
             if (enabled(MiningFeature.AUTO_CENTER_BLOCK)) {
                 INSTANCE.centerPlayer(client);
             }
-            if (!INSTANCE.applyBoostMovement(client) && enabled(MiningFeature.AUTO_FLIGHT_HEIGHT)) {
+            if (enabled(MiningFeature.AUTO_FLIGHT_HEIGHT)) {
                 INSTANCE.maintainFlightHeight(client);
             }
         }
@@ -95,7 +95,7 @@ public final class MiningManager {
             if (controlsBreaking()) {
                 client.gameMode.stopDestroyBlock();
             }
-            if (!INSTANCE.applyBoostMovement(client) && enabled(MiningFeature.AUTO_FLIGHT_HEIGHT)) {
+            if (enabled(MiningFeature.AUTO_FLIGHT_HEIGHT)) {
                 INSTANCE.captureFlightHeight(client);
             }
         }
@@ -156,7 +156,6 @@ public final class MiningManager {
         if (!running || client.isPaused()) {
             return;
         }
-        applyBoostMovement(client);
         stopMovement = false;
         if (enabled(MiningFeature.AUTO_CAMERA_LOCK)) {
             if (lockedYaw == null) {
@@ -222,13 +221,11 @@ public final class MiningManager {
         }
         BlockHitResult crosshair = MiningTargets.crosshair(client);
         mineBlock(client, crosshair);
-        if (boostCooldown > 0) {
-            boostCooldown--;
-        }
+        if (boostElapsedTicks < Integer.MAX_VALUE) boostElapsedTicks++;
         if (enabled(MiningFeature.AUTO_BOOST) && target == null && MiningTargets.crosshair(client) == null
-                && (boostCooldown == 0 || enabled(MiningFeature.PLACEMENT_WITHOUT_DELAY))
+                && boostElapsedTicks >= ConfigManager.current().mining.autoBoostIntervalTicks()
                 && !client.player.isUsingItem() && !stopMovement) {
-            boostCooldown = 4;
+            boostElapsedTicks = 0;
             useItem(client);
         }
     }
@@ -276,17 +273,6 @@ public final class MiningManager {
             Vec3 velocity = player.getDeltaMovement();
             player.setDeltaMovement(alongZ ? new Vec3(0, velocity.y, velocity.z) : new Vec3(velocity.x, velocity.y, 0));
         }
-    }
-
-    private boolean applyBoostMovement(Minecraft client) {
-        if (enabled(MiningFeature.AUTO_BOOST)) {
-            var player = client.player;
-            Vec3 velocity = player.getDeltaMovement();
-            if (ConfigManager.preset(ConfigManager.current().preset).autoBoostBlockUpward && velocity.y > 0) {
-                player.setDeltaMovement(velocity.x, 0, velocity.z);
-            }
-        }
-        return false;
     }
 
     private void captureFlightHeight(Minecraft client) {
@@ -348,7 +334,7 @@ public final class MiningManager {
         stopMovement = false;
         lockedYaw = null;
         lockedFlightHeight = null;
-        boostCooldown = 0;
+        boostElapsedTicks = Integer.MAX_VALUE;
         border.reset();
     }
 }

@@ -1,6 +1,5 @@
 {
     "name": "Default",
-    "autoBoostBlockUpward": false,
     "features": {
         "autoMine": true,
         "autoSprint": true,
@@ -20,7 +19,8 @@
             "autoCenterBlock",
             "obstacleMiner"
         ],
-        "worldBorderDistance": 0
+        "worldBorderDistance": 0,
+        "autoBoostIntervalMs": 200
     },
     "tnt": {
         "builder": false,

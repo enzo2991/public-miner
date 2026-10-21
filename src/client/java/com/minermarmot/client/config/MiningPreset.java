@@ -10,7 +10,6 @@ import java.util.EnumMap;
 
 public final class MiningPreset {
     public String name;
-    public boolean autoBoostBlockUpward;
     public EnumMap<MiningFeature, Boolean> features = new EnumMap<>(MiningFeature.class);
     public MiningConfig defaults = new MiningConfig();
     public PlayerAlertsPreset playerAlerts = new PlayerAlertsPreset();

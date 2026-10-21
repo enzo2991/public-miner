@@ -8,16 +8,20 @@ public final class MiningConfig {
 
     public EnumSet<MiningFeature> enabled = EnumSet.noneOf(MiningFeature.class);
     public int worldBorderDistance;
+    public int autoBoostIntervalMs = 200;
 
     public MiningConfig copy() {
         MiningConfig copy = new MiningConfig();
         copy.enabled = enabled.clone();
         copy.worldBorderDistance = worldBorderDistance;
+        copy.autoBoostIntervalMs = autoBoostIntervalMs;
         return copy;
     }
 
+    public int autoBoostIntervalTicks() { return Math.max(1, (autoBoostIntervalMs + 49) / 50); }
+
     public void validate() {
-        if (enabled == null || worldBorderDistance < 0) {
+        if (enabled == null || worldBorderDistance < 0 || autoBoostIntervalMs < 0 || autoBoostIntervalMs > 60000) {
             throw new IllegalArgumentException("Invalid mining settings");
         }
     }

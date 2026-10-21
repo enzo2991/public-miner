@@ -133,7 +133,9 @@ public class ConfigScreen extends ConfigMenuScreen {
                     if (feature == MiningFeature.PLACEMENT_WITHOUT_DELAY || !preset.allows(feature) || !matches(label.getString())) {
                         continue;
                     }
-                    if (feature == MiningFeature.WORLD_BORDER) {
+                    if (feature == MiningFeature.AUTO_BOOST) {
+                        options.addAutoBoost();
+                    } else if (feature == MiningFeature.WORLD_BORDER) {
                         List<Integer> distances = new ArrayList<>(MiningConfig.BORDER_DISTANCES);
                         distances.add(CUSTOM_BORDER_DISTANCE);
                         options.addLabeledOption(label, CycleButton.builder(distance -> distance == CUSTOM_BORDER_DISTANCE
@@ -389,6 +391,8 @@ public class ConfigScreen extends ConfigMenuScreen {
 
 
 
+        void addAutoBoost() { addEntry(new AutoBoostEntry()); }
+
         void addNumber(Component label, int value, int min, int max, IntConsumer set) {
             addEntry(new NumberEntry(label, value, min, max, set));
         }
@@ -512,6 +516,42 @@ public class ConfigScreen extends ConfigMenuScreen {
             setTextColor(valid ? enabled.getAsBoolean() ? 0xFFE0E0E0 : 0xFF777777 : 0xFFFF5555);
             super.extractWidgetRenderState(graphics, mouseX, mouseY, partialTick);
         }
+    }
+
+    private final class AutoBoostEntry extends OptionEntry {
+        private final Component label = Component.translatable(MiningFeature.AUTO_BOOST.translationKey());
+        private final CycleButton<Boolean> enabled;
+        private final NumberInput interval;
+
+        AutoBoostEntry() {
+            enabled = toggleBuilder(config.mining.enabled.contains(MiningFeature.AUTO_BOOST))
+                    .create(0, 0, 70, 20, label, (button, value) -> {
+                        if (value) config.mining.enabled.add(MiningFeature.AUTO_BOOST);
+                        else config.mining.enabled.remove(MiningFeature.AUTO_BOOST);
+                        applyChanges();
+                    });
+            enabled.setTooltip(Tooltip.create(label));
+            interval = new NumberInput(text("autoBoostInterval"), config.mining.autoBoostIntervalMs, 0, 60000,
+                    value -> config.mining.autoBoostIntervalMs = value, () -> enabled.getValue());
+        }
+
+        @Override
+        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float tick) {
+            int rowWidth = Math.min(500, getContentWidth());
+            int left = getContentX() + (getContentWidth() - rowWidth) / 2;
+            int right = left + rowWidth;
+            graphics.text(font, font.plainSubstrByWidth(label.getString(), Math.max(0, rowWidth - 180)), left, getContentY() + 6,
+                    enabled.getValue() ? 0xFFFFFFFF : 0xFF888888);
+            interval.setPosition(right - 170, getContentY());
+            enabled.setPosition(right - 70, getContentY());
+            graphics.text(font, "ms", interval.getRight() + 4, getContentY() + 6, 0xFFBBBBBB);
+            renderWidget(interval, graphics, mouseX, mouseY, tick);
+            renderWidget(enabled, graphics, mouseX, mouseY, tick);
+            if (hovered && mouseX < interval.getX()) graphics.setTooltipForNextFrame(label, mouseX, mouseY);
+        }
+
+        @Override public List<? extends GuiEventListener> children() { return List.of(interval, enabled); }
+        @Override public List<? extends NarratableEntry> narratables() { return List.of(interval, enabled); }
     }
 
     private final class NumberEntry extends OptionEntry {

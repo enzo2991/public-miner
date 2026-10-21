@@ -86,28 +86,7 @@ public final class ConfigManager {
     }
 
     static MiningPreset loadPreset(Path file, MiningPreset template) throws IOException {
-        String json = Files.readString(file);
-        MiningPreset preset = parsePreset(json, template);
-        var document = JsonParser.parseString(json).getAsJsonObject();
-        if (!document.has("autoBoostBlockUpward")) {
-            document.addProperty("autoBoostBlockUpward", preset.autoBoostBlockUpward);
-            try {
-                Path temporary = Files.createTempFile(file.getParent(), "preset-", ".tmp");
-                try {
-                    Files.writeString(temporary, GSON.toJson(document));
-                    try {
-                        Files.move(temporary, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
-                    } catch (AtomicMoveNotSupportedException exception) {
-                        Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
-                    }
-                } finally {
-                    Files.deleteIfExists(temporary);
-                }
-            } catch (IOException exception) {
-                Main.LOGGER.warn("Cannot update mining preset {}; using the in-memory default", file, exception);
-            }
-        }
-        return preset;
+        return parsePreset(Files.readString(file), template);
     }
 
     public static MiningPreset parsePreset(String json) {
@@ -120,9 +99,6 @@ public final class ConfigManager {
         MiningPreset preset = GSON.fromJson(document, MiningPreset.class);
         if (preset == null) {
             throw new IllegalArgumentException("Empty mining preset");
-        }
-        if (legacyTemplate != null && !document.getAsJsonObject().has("autoBoostBlockUpward")) {
-            preset.autoBoostBlockUpward = legacyTemplate.autoBoostBlockUpward;
         }
         if (legacyTemplate != null && preset.features != null
                 && !preset.features.containsKey(MiningFeature.PLACEMENT_WITHOUT_DELAY)) {
