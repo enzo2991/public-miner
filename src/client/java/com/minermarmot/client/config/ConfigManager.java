@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
 import com.minermarmot.Main;
-import com.minermarmot.client.features.alerts.BlockAlertsPreset;
 import com.minermarmot.client.features.alerts.PlayerAlertsConfig;
 import com.minermarmot.client.features.mining.MiningFeature;
 import net.fabricmc.loader.api.FabricLoader;
@@ -117,6 +116,7 @@ public final class ConfigManager {
 
     public static MiningPreset parsePreset(String json, MiningPreset legacyTemplate) {
         var document = JsonParser.parseString(json);
+        removeUnknownFeatures(document);
         MiningPreset preset = GSON.fromJson(document, MiningPreset.class);
         if (preset == null) {
             throw new IllegalArgumentException("Empty mining preset");
@@ -137,14 +137,7 @@ public final class ConfigManager {
             preset.portals = GSON.fromJson(GSON.toJson(legacyTemplate.portals),
                     com.minermarmot.client.features.portal.PortalPreset.class);
         }
-        if (legacyTemplate != null && !document.getAsJsonObject().has("autocrafter")) {
-            preset.autocrafter = GSON.fromJson(GSON.toJson(legacyTemplate.autocrafter),
-                    com.minermarmot.client.features.autocraft.AutocraftPreset.class);
-        }
-        if (legacyTemplate != null && !document.getAsJsonObject().has("skins")) {
-            preset.skins = GSON.fromJson(GSON.toJson(legacyTemplate.skins),
-                    com.minermarmot.client.features.skins.SkinsPreset.class);
-        }
+
         if (legacyTemplate != null && !document.getAsJsonObject().has("playerAlerts")) {
             // Supply new bundled alerts in memory without overwriting customized preset files.
             preset.playerAlerts = GSON.fromJson(GSON.toJson(legacyTemplate.playerAlerts),
@@ -160,33 +153,15 @@ public final class ConfigManager {
             // Repair the original bundled Minerite TNT defaults in memory, preserving the installed file.
             preset.tnt.shopClicks = new java.util.ArrayList<>(legacyTemplate.tnt.shopClicks);
         }
-        if (legacyTemplate != null && !document.getAsJsonObject().has("blockAlerts")
-                && !preset.blockAlerts.targets().isEmpty()) {
-            Map<String, String> categoryById = new LinkedHashMap<>();
-            legacyTemplate.blockAlerts.categories.forEach((name, category) ->
-                    category.blocks.forEach(target -> categoryById.put(target.id, name)));
-            if (preset.blockAlerts.targets().stream().allMatch(target -> categoryById.containsKey(target.id))) {
-                // Only the legacy default's known targets have categories we can recover safely.
-                Map<String, BlockAlertsPreset.Category> categories = new LinkedHashMap<>();
-                legacyTemplate.blockAlerts.categories.keySet().forEach(name -> categories.put(name, new BlockAlertsPreset.Category()));
-                preset.blockAlerts.targets().forEach(target -> categories.get(categoryById.get(target.id)).blocks.add(target));
-                preset.blockAlerts.categories = categories;
-                preset.validate();
-            }
-        }
+
         return preset;
     }
 
     public static ClientConfig parseConfig(String json) {
         var document = JsonParser.parseString(json);
+        removeUnknownFeatures(document);
         ClientConfig loaded = GSON.fromJson(document, ClientConfig.class);
-        if (loaded != null && loaded.alerts == null && PRESETS.containsKey(loaded.preset)) {
-            loaded.alerts = PRESETS.get(loaded.preset).blockAlerts.newConfig();
-            if (document.getAsJsonObject().has("enabledBlockAlerts")) {
-                var enabled = document.getAsJsonObject().getAsJsonArray("enabledBlockAlerts");
-                loaded.alerts.targets.forEach((id, settings) -> settings.enabled = enabled.contains(GSON.toJsonTree(id)));
-            }
-        }
+
         if (loaded != null && PRESETS.containsKey(loaded.preset)) {
             inheritRepeats(loaded.playerAlerts, document.getAsJsonObject().get("playerAlerts"),
                     PRESETS.get(loaded.preset).playerAlerts.defaults);
@@ -200,6 +175,23 @@ public final class ConfigManager {
             }
         }
         return loaded;
+    }
+
+    private static void removeUnknownFeatures(JsonElement document) {
+        if (document == null || !document.isJsonObject()) return;
+        var root = document.getAsJsonObject();
+        var names = java.util.Arrays.stream(MiningFeature.values()).flatMap(feature -> java.util.stream.Stream.of(
+                GSON.toJsonTree(feature), GSON.toJsonTree(feature.name()), GSON.toJsonTree(feature.toString()))).collect(java.util.stream.Collectors.toSet());
+        if (root.has("features") && root.get("features").isJsonObject()) {
+            root.getAsJsonObject("features").entrySet().removeIf(entry -> !names.contains(GSON.toJsonTree(entry.getKey())));
+        }
+        for (String key : List.of("mining", "defaults")) {
+            if (!root.has(key) || !root.get(key).isJsonObject()) continue;
+            var section = root.getAsJsonObject(key);
+            if (section.has("enabled") && section.get("enabled").isJsonArray()) {
+                section.getAsJsonArray("enabled").asList().removeIf(value -> !value.isJsonNull() && !names.contains(value));
+            }
+        }
     }
 
     private static void inheritRepeats(PlayerAlertsConfig settings, JsonElement fields, PlayerAlertsConfig defaults) {

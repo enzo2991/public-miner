@@ -10,7 +10,6 @@ public enum MiningFeature {
     @SerializedName("autoCenterBlock") AUTO_CENTER_BLOCK("autoCenterBlock"),
     @SerializedName("autoFlightHeight") AUTO_FLIGHT_HEIGHT("autoFlightHeight"),
     @SerializedName("obstacleMiner") OBSTACLE_MINER("obstacleMiner"),
-    @SerializedName("surfaceTargetMiner") SURFACE_TARGET_MINER("surfaceTargetMiner"),
     @SerializedName("worldBorder") WORLD_BORDER("worldBorder"),
     @SerializedName("miningWithoutDelay") MINING_WITHOUT_DELAY("miningWithoutDelay"),
     @SerializedName("placementWithoutDelay") PLACEMENT_WITHOUT_DELAY("placementWithoutDelay");

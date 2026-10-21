@@ -10,10 +10,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-final class MiningTargets {
+public final class MiningTargets {
     private MiningTargets() {}
 
-    static BlockHitResult crosshair(Minecraft client) {
+    public static BlockHitResult crosshair(Minecraft client) {
         HitResult hit = client.player.raycastHitResult(1.0f, client.player);
         if (hit instanceof BlockHitResult blockHit && hit.getType() == HitResult.Type.BLOCK) {
             return blockHit;
@@ -29,7 +29,7 @@ final class MiningTargets {
                 && client.player.isWithinBlockInteractionRange(pos, 0);
     }
 
-    static BlockHitResult visibleHit(Minecraft client, BlockPos pos) {
+    public static BlockHitResult visibleHit(Minecraft client, BlockPos pos) {
         if (!canMine(client, pos)) {
             return null;
         }

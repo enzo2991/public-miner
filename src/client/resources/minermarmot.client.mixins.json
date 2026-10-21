@@ -1,19 +1,18 @@
 {
-  "required": true,
-  "package": "com.minermarmot.client.mixin",
-  "compatibilityLevel": "JAVA_25",
-  "client": [
-    "KeyboardInputMixin",
-    "LocalPlayerMixin",
-    "MinecraftMixin",
-    "EntityMixin",
-    "GuiMixin",
-    "ClientPacketListenerMixin",
-    "ItemModelResolverMixin",
-    "SoundEngineMixin",
-    "AudioChannelAccessor"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+    "required": true,
+    "package": "com.minermarmot.client.mixin",
+    "compatibilityLevel": "JAVA_25",
+    "client": [
+        "KeyboardInputMixin",
+        "LocalPlayerMixin",
+        "MinecraftMixin",
+        "EntityMixin",
+        "GuiMixin",
+        "ClientPacketListenerMixin",
+        "SoundEngineMixin",
+        "AudioChannelAccessor"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
 }

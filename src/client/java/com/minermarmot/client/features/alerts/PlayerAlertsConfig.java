@@ -26,7 +26,7 @@ public final class PlayerAlertsConfig {
     }
 
     public void validate() {
-        if (!BlockAlertSettings.validVolume(inventoryFullVolume) || !BlockAlertSettings.validVolume(privateMessageVolume)) {
+        if (!AlertSounds.validVolume(inventoryFullVolume) || !AlertSounds.validVolume(privateMessageVolume)) {
             throw new IllegalArgumentException("Player alert volumes must be between 0.5 and 5");
         }
         if (inventoryFullRepeat < 1 || inventoryFullRepeat > 5 || privateMessageRepeat < 1 || privateMessageRepeat > 5) {
@@ -40,6 +40,6 @@ public final class PlayerAlertsConfig {
         if (sound == null || !sound.isEmpty() && Identifier.tryParse(sound) == null) {
             throw new IllegalArgumentException("Invalid player alert sound");
         }
-        return BlockAlertSettings.SOUNDS.contains(sound) ? sound : "";
+        return AlertSounds.SOUNDS.contains(sound) ? sound : "";
     }
 }

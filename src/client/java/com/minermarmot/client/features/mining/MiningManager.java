@@ -28,7 +28,6 @@ public final class MiningManager {
     private static final int MAX_BREAKS_PER_TICK = 8;
 
     private final ObstacleMinerManager obstacles = new ObstacleMinerManager();
-    private final SurfaceTargetMiner surfaces = new SurfaceTargetMiner();
     private final WorldBorderManager border = new WorldBorderManager();
     private KeyMapping toggleKey;
     private boolean running;
@@ -124,7 +123,7 @@ public final class MiningManager {
     public static boolean controlsBreaking() {
         Minecraft client = Minecraft.getInstance();
         return INSTANCE.running && canAct(client) && (enabled(MiningFeature.AUTO_MINE)
-                || enabled(MiningFeature.OBSTACLE_MINER) || enabled(MiningFeature.SURFACE_TARGET_MINER)
+                || enabled(MiningFeature.OBSTACLE_MINER)
                 || INSTANCE.border.isTurning());
     }
 
@@ -211,6 +210,16 @@ public final class MiningManager {
         }
     }
 
+    private BlockHitResult findTarget(Minecraft client, BlockHitResult crosshair) {
+        BlockHitResult hit = null;
+        if (enabled(MiningFeature.OBSTACLE_MINER) || border.isTurning()) {
+            hit = obstacles.findTarget(client, Vec3.directionFromRotation(0, client.player.getYRot()), target);
+        }
+        if (hit == null && enabled(MiningFeature.AUTO_MINE) && crosshair != null
+                && MiningTargets.canMine(client, crosshair.getBlockPos())) hit = crosshair;
+        return hit;
+    }
+
     private void endTick(Minecraft client) {
         if (!running || !canAct(client) || client.isPaused()) {
             return;
@@ -219,17 +228,7 @@ public final class MiningManager {
         int attempts = enabled(MiningFeature.AUTO_MINE) && enabled(MiningFeature.MINING_WITHOUT_DELAY)
                 ? MAX_BREAKS_PER_TICK : 1;
         for (int attempt = 0; attempt < attempts; attempt++) {
-            BlockHitResult hit = null;
-            if (enabled(MiningFeature.OBSTACLE_MINER) || border.isTurning()) {
-                hit = obstacles.findTarget(client, Vec3.directionFromRotation(0, client.player.getYRot()), target);
-            }
-            if (hit == null && enabled(MiningFeature.SURFACE_TARGET_MINER) && !border.isTurning()) {
-                hit = surfaces.findTarget(client, target);
-            }
-            if (hit == null && enabled(MiningFeature.AUTO_MINE) && crosshair != null
-                    && MiningTargets.canMine(client, crosshair.getBlockPos())) {
-                hit = crosshair;
-            }
+            BlockHitResult hit = findTarget(client, crosshair);
             if (hit == null || client.player.isUsingItem() || stopMovement) {
                 stopBreaking(client);
                 break;

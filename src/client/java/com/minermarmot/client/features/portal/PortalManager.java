@@ -3,7 +3,6 @@ package com.minermarmot.client.features.portal;
 import com.minermarmot.client.integration.VersionCheck;
 
 import com.minermarmot.client.config.ConfigManager;
-import com.minermarmot.client.features.alerts.BlockAlertManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -46,6 +45,7 @@ public final class PortalManager {
     private PortalManager() {}
 
     public static void initialize() {
+        PortalRenderer.initialize();
         ClientChunkEvents.CHUNK_LOAD.register((world, chunk) -> {
             INSTANCE.setLevel(world);
             long key = chunk.getPos().pack();
@@ -159,8 +159,18 @@ public final class PortalManager {
         return level.getChunkSource().hasChunk(pos.getX() >> 4, pos.getZ() >> 4);
     }
 
+    public static boolean onScreen(Minecraft client, BlockPos pos) {
+        Vec3 center = Vec3.atCenterOf(pos);
+        if (client.player.getLookAngle().dot(center.subtract(client.player.getEyePosition())) <= 0) {
+            return false;
+        }
+        Vec3 projected = client.gameRenderer.projectPointToScreen(center);
+        return Double.isFinite(projected.x) && Double.isFinite(projected.y)
+                && projected.x >= -1 && projected.x <= 1 && projected.y >= -1 && projected.y <= 1;
+    }
+
     private static boolean canDiscover(Minecraft client, PortalPreset.Pattern pattern) {
-        return pattern.blocks().stream().anyMatch(pos -> BlockAlertManager.onScreen(client, pos)
+        return pattern.blocks().stream().anyMatch(pos -> onScreen(client, pos)
                 && hasVisibleFace(client, pos));
     }
 

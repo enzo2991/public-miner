@@ -63,20 +63,20 @@ public final class SoundSelectionScreen extends ConfigMenuScreen {
 
     private void refresh() {
         sounds.clearSounds();
-        BlockAlertSettings.SOUNDS.stream()
+        AlertSounds.SOUNDS.stream()
                 .filter(id -> (id + " " + label(id).getString()).toLowerCase(Locale.ROOT).contains(query.toLowerCase(Locale.ROOT)))
                 .forEach(id -> sounds.addSound(new SoundEntry(id)));
     }
 
     public static Component label(String id) {
-        return BlockAlertSettings.SOUNDS.contains(id)
+        return AlertSounds.SOUNDS.contains(id)
                 ? Component.translatable("minermarmot.alerts.sound." + id.substring(id.lastIndexOf('.') + 1))
                 : Component.translatable("minermarmot.alerts.noSound").withStyle(style -> style.withColor(0xBBBBBB));
     }
 
     public static CycleButton<Float> volumeButton(float initial, Consumer<Float> update) {
         return CycleButton.builder(value -> Component.literal("×" + value), initial)
-                .withValues(BlockAlertSettings.VOLUMES).displayOnlyValue()
+                .withValues(AlertSounds.VOLUMES).displayOnlyValue()
                 .create(0, 0, 70, 20, Component.translatable("minermarmot.alerts.volume"), (button, value) -> update.accept(value));
     }
 
@@ -123,7 +123,7 @@ public final class SoundSelectionScreen extends ConfigMenuScreen {
             choose = Button.builder(name, button -> choose(id))
                     .bounds(0, 0, 100, 20).build();
             choose.setTooltip(Tooltip.create(Component.literal(id)));
-            preview = Button.builder(Component.translatable("minermarmot.alerts.previewSound"), button -> BlockAlertManager.playSound(id, volume))
+            preview = Button.builder(Component.translatable("minermarmot.alerts.previewSound"), button -> AlertSounds.playSound(id, volume))
                     .bounds(0, 0, 60, 20).build();
         }
 

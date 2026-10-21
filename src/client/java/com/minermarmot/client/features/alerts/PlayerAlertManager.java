@@ -144,7 +144,7 @@ public final class PlayerAlertManager {
 
     private void notifyPlayer(Minecraft client, String key, String sound, int repeat, float volume) {
         client.player.sendOverlayMessage(Component.translatable("minermarmot.alerts." + key + "Notification"));
-        BlockAlertManager.playSound(sound, volume);
+        AlertSounds.playSound(sound, volume);
         if (!sound.isEmpty() && repeat > 1) {
             repetitions.add(new Repetition(key, sound, repeat - 1, Util.getMillis() + 250));
         }
@@ -164,7 +164,7 @@ public final class PlayerAlertManager {
                 continue;
             }
             if (now >= pending.nextPlay) {
-                BlockAlertManager.playSound(sound, inventory ? settings.inventoryFullVolume : settings.privateMessageVolume);
+                AlertSounds.playSound(sound, inventory ? settings.inventoryFullVolume : settings.privateMessageVolume);
                 if (pending.remaining == 1) {
                     iterator.remove();
                 } else {

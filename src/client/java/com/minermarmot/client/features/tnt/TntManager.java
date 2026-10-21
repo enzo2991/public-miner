@@ -5,7 +5,6 @@ import com.minermarmot.client.integration.VersionCheck;
 import com.minermarmot.client.minermarmotClient;
 import com.minermarmot.client.config.ConfigManager;
 import com.minermarmot.client.features.mining.MiningManager;
-import com.minermarmot.client.features.autocraft.AutocraftManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -45,7 +44,7 @@ public final class TntManager {
     private enum State { BUILD, TNT_EQUIP, SHOP, DELIVERY, EQUIP, SNEAK, PLACE_WAIT, OPEN_WAIT, TRANSFER }
     private static final int TIMEOUT = 200;
     static final float CARPET_PITCH = 30;
-    private static final int[] CARPET_OFFSETS = {-2, 2, -1, 1, 0};
+    private static final int[] CARPET_OFFSETS = {-2, -1, 0, 1, 2, 1, 0, -1};
     private static KeyMapping toggleKey;
     private static TntMode mode;
     private static String presetId;
@@ -101,6 +100,7 @@ public final class TntManager {
     }
 
     public static boolean controlsMovement() { return active && canAct(Minecraft.getInstance()); }
+    public static boolean smoothsCamera() { return controlsMovement() && mode == TntMode.CARPET && (state == State.BUILD || state == State.TNT_EQUIP); }
     public static boolean retreats() { return (state == State.BUILD || state == State.TNT_EQUIP) && retreating; }
     public static boolean sneaks() { return shiftOwned; }
     public static Vec2 movementInput() {
@@ -119,10 +119,14 @@ public final class TntManager {
         centerOnTravelAxis(client);
         if (!active) return;
         if (state != State.BUILD && state != State.TNT_EQUIP) haltReloadMovement(client);
+        // Apply the sweep after vanilla saves the old rotation, so rendering interpolates between ticks.
+        if (mode == TntMode.CARPET && retreats()) setCarpetView(client);
     }
 
     private static TntPreset preset() { return ConfigManager.preset(presetId).tnt; }
     private static Item shulkerItem() { return BuiltInRegistries.ITEM.getValue(Identifier.parse(preset().shulkerItem)); }
+
+    private static boolean interactionBusy() { return false; }
 
     private static void startTick(Minecraft client) {
         while (toggleKey.consumeClick()) {
@@ -136,14 +140,13 @@ public final class TntManager {
             return;
         }
         if (client.isPaused()) return;
-        if (AutocraftManager.isBusy()) { retreating = false; stopHorizontal(client); return; }
+        if (interactionBusy()) { retreating = false; stopHorizontal(client); return; }
         retreating = false;
         client.player.setSprinting(false);
         if (state != State.BUILD) {
             if (state == State.TNT_EQUIP) {
                 if (client.gui.screen() != null && !(client.gui.screen() instanceof ChatScreen)) { stopHorizontal(client); return; }
                 retreating = true;
-                setCarpetView(client);
                 return;
             }
             client.player.setYRot(yaw);
@@ -155,8 +158,7 @@ public final class TntManager {
             stopHorizontal(client);
             return;
         }
-        if (mode == TntMode.CARPET) setCarpetView(client);
-        else {
+        if (mode != TntMode.CARPET) {
             client.player.setYRot(yaw);
             client.player.setXRot(pitch);
         }
@@ -255,7 +257,7 @@ public final class TntManager {
     }
 
     private static void tick(Minecraft client) {
-        if (!active || !canAct(client) || client.isPaused() || AutocraftManager.isBusy()) return;
+        if (!active || !canAct(client) || client.isPaused() || interactionBusy()) return;
         if (state == State.BUILD) {
             if (client.gui.screen() != null && !(client.gui.screen() instanceof ChatScreen)) return;
             BlockHitResult hit = placementHit(client);

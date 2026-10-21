@@ -4,10 +4,8 @@ import com.minermarmot.Main;
 import com.minermarmot.client.integration.VersionCheck;
 import com.minermarmot.client.features.tnt.TntManager;
 import com.minermarmot.client.features.display.DisplayRenderer;
-import com.minermarmot.client.features.autocraft.AutocraftManager;
 import com.minermarmot.client.config.ConfigManager;
 import com.minermarmot.client.features.mining.MiningManager;
-import com.minermarmot.client.features.alerts.BlockAlertManager;
 import com.minermarmot.client.features.alerts.PlayerAlertManager;
 import com.minermarmot.client.features.portal.PortalManager;
 import net.fabricmc.api.ClientModInitializer;
@@ -24,12 +22,10 @@ public class minermarmotClient implements ClientModInitializer {
         ConfigManager.initialize();
         VersionCheck.initialize();
         MiningManager.initialize();
-        BlockAlertManager.initialize();
         PortalManager.initialize();
         PlayerAlertManager.initialize();
         TntManager.initialize();
         DisplayRenderer.initialize();
-        AutocraftManager.initialize();
         KeyMapping openConfigKey = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.minermarmot.openConfig",
                 GLFW.GLFW_KEY_F8, KEY_CATEGORY));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

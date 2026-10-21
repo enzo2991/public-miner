@@ -9,6 +9,12 @@ import net.minecraft.world.phys.Vec3;
 public final class PortalRenderer {
     private PortalRenderer() {}
 
+    public static void initialize() {
+        net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry.attachElementBefore(
+                net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements.CHAT, com.minermarmot.Main.id("portal_waypoints"),
+                (graphics, tracker) -> render(graphics, 8));
+    }
+
     public static int reservedHeight(Minecraft client) {
         if (client.player == null) return 0;
         int count = Math.min(PortalManager.waypoints(client.player.position()).size(),
