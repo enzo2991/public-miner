@@ -55,6 +55,8 @@ public final class TntManager {
     private static AbstractContainerMenu shopMenu;
     private static boolean active;
     private static State state = State.BUILD;
+    private static boolean placedDuringTntEquip;
+    private static boolean tntCompactionPending;
     private static int ticks;
     private static float yaw, pitch;
     private static double centeredLane;
@@ -126,8 +128,6 @@ public final class TntManager {
     private static TntPreset preset() { return ConfigManager.preset(presetId).tnt; }
     private static Item shulkerItem() { return BuiltInRegistries.ITEM.getValue(Identifier.parse(preset().shulkerItem)); }
 
-    private static boolean interactionBusy() { return false; }
-
     private static void startTick(Minecraft client) {
         while (toggleKey.consumeClick()) {
             if (!(client.gui.screen() instanceof ChatScreen)) {
@@ -140,13 +140,13 @@ public final class TntManager {
             return;
         }
         if (client.isPaused()) return;
-        if (interactionBusy()) { retreating = false; stopHorizontal(client); return; }
         retreating = false;
         client.player.setSprinting(false);
         if (state != State.BUILD) {
             if (state == State.TNT_EQUIP) {
                 if (client.gui.screen() != null && !(client.gui.screen() instanceof ChatScreen)) { stopHorizontal(client); return; }
-                retreating = true;
+                retreating = client.player.getMainHandItem().is(Items.TNT);
+                if (!retreating) stopHorizontal(client);
                 return;
             }
             client.player.setYRot(yaw);
@@ -220,6 +220,7 @@ public final class TntManager {
         retreating = false;
         carpetHeight = player.blockPosition().getY();
         carpetStep = 0;
+        tntCompactionPending = true;
         if (mode == TntMode.CARPET) setCarpetView(client);
         stuckTicks = 0;
         previousPosition = player.position();
@@ -257,8 +258,12 @@ public final class TntManager {
     }
 
     private static void tick(Minecraft client) {
-        if (!active || !canAct(client) || client.isPaused() || interactionBusy()) return;
-        if (state == State.BUILD) {
+        if (!active || !canAct(client) || client.isPaused()) return;
+        if (state == State.TNT_EQUIP) {
+            if (++ticks > TIMEOUT) { stop(client, "timeout"); return; }
+            reload(client);
+        }
+        if (state == State.BUILD || state == State.TNT_EQUIP) {
             if (client.gui.screen() != null && !(client.gui.screen() instanceof ChatScreen)) return;
             BlockHitResult hit = placementHit(client);
             if (mode == TntMode.CARPET) carpetStep = (carpetStep + 1) % CARPET_OFFSETS.length;
@@ -266,6 +271,7 @@ public final class TntManager {
             if (mode == TntMode.CARPET && !client.player.getMainHandItem().is(Items.TNT)) return;
             var result = client.gameMode.useItemOn(client.player, InteractionHand.MAIN_HAND, hit);
             if (mode == TntMode.CARPET && !result.consumesAction()) return;
+            if (state == State.TNT_EQUIP) placedDuringTntEquip = true;
             if (mode == TntMode.BUILDER && !result.consumesAction()) {
                 client.gameMode.useItem(client.player, InteractionHand.MAIN_HAND);
             }
@@ -327,10 +333,22 @@ public final class TntManager {
     }
 
     private static boolean equipTnt(Minecraft client) {
-        if (client.player.getMainHandItem().is(Items.TNT)) return true;
+        ItemStack held = client.player.getMainHandItem();
+        int heldCount = held.is(Items.TNT) ? held.getCount() : 0;
         var inventory = client.player.getInventory();
-        int slot = findItemSlot(inventory, Items.TNT);
-        if (slot < 0) return false;
+        if (tntCompactionPending || heldCount <= 10) {
+            boolean compacted = compactTnt(client);
+            tntCompactionPending = false;
+            if (!active) return false;
+            if (compacted) {
+                placedDuringTntEquip = false;
+                enter(State.TNT_EQUIP);
+                held = client.player.getMainHandItem();
+                heldCount = held.is(Items.TNT) ? held.getCount() : 0;
+            }
+        }
+        int slot = findTntSlot(inventory, heldCount);
+        if (slot < 0) return heldCount > 0;
         if (slot >= 9) {
             var menuSlot = client.player.inventoryMenu.findSlot(inventory, slot);
             if (menuSlot.isEmpty() || !client.player.inventoryMenu.getCarried().isEmpty()) { stop(client, "inventoryBusy"); return false; }
@@ -338,7 +356,8 @@ public final class TntManager {
             client.gameMode.handleContainerInput(client.player.inventoryMenu.containerId, menuSlot.getAsInt(), target,
                     ContainerInput.SWAP, client.player);
             inventory.setSelectedSlot(target);
-            // Wait through stale updates from the preceding placement before checking stock again.
+            // Keep placing while inventory updates settle, without swapping again or buying early.
+            placedDuringTntEquip = false;
             enter(State.TNT_EQUIP);
             return false;
         }
@@ -346,12 +365,52 @@ public final class TntManager {
         return client.player.getMainHandItem().is(Items.TNT);
     }
 
-    static int findItemSlot(net.minecraft.world.Container inventory, Item item) {
-        for (int i = 0; i < Math.min(36, inventory.getContainerSize()); i++) {
-            if (inventory.getItem(i).is(item)) return i;
+    private static boolean compactTnt(Minecraft client) {
+        var inventory = client.player.getInventory();
+        var menu = client.player.inventoryMenu;
+        boolean compacted = false;
+        for (int slot = 0; slot < Math.min(41, inventory.getContainerSize()); slot++) {
+            if (slot >= 36 && slot != 40 || !hasTntMergeTarget(inventory, slot)) continue;
+            var menuSlot = menu.findSlot(inventory, slot);
+            if (client.player.containerMenu != menu || menuSlot.isEmpty() || !menu.getCarried().isEmpty()) {
+                stop(client, "inventoryBusy");
+                return false;
+            }
+            // Vanilla double-click gathers matching partial stacks before splitting a full stack.
+            client.gameMode.handleContainerInput(menu.containerId, menuSlot.getAsInt(), 0, ContainerInput.PICKUP, client.player);
+            client.gameMode.handleContainerInput(menu.containerId, menuSlot.getAsInt(), 0, ContainerInput.PICKUP_ALL, client.player);
+            client.gameMode.handleContainerInput(menu.containerId, menuSlot.getAsInt(), 0, ContainerInput.PICKUP, client.player);
+            if (!menu.getCarried().isEmpty()) { stop(client, "inventoryBusy"); return false; }
+            compacted = true;
         }
-        if (inventory.getContainerSize() > 40 && inventory.getItem(40).is(item)) return 40;
-        return -1;
+        return compacted;
+    }
+
+    static boolean hasTntMergeTarget(net.minecraft.world.Container inventory, int slot) {
+        ItemStack stack = inventory.getItem(slot);
+        if (!stack.is(Items.TNT) || stack.getCount() >= stack.getMaxStackSize()) return false;
+        for (int other = 0; other < Math.min(41, inventory.getContainerSize()); other++) {
+            if (other == slot || other >= 36 && other != 40) continue;
+            ItemStack candidate = inventory.getItem(other);
+            if (candidate.getCount() < candidate.getMaxStackSize() && ItemStack.isSameItemSameComponents(stack, candidate)) return true;
+        }
+        return false;
+    }
+
+    static int findTntSlot(net.minecraft.world.Container inventory, int heldCount) {
+        if (heldCount > 10) return -1;
+        int slot = -1;
+        int largest = heldCount > 0 ? 10 : 0;
+        for (int i = 0; i < Math.min(36, inventory.getContainerSize()); i++) {
+            ItemStack stack = inventory.getItem(i);
+            if (stack.is(Items.TNT) && stack.getCount() > largest) {
+                slot = i;
+                largest = stack.getCount();
+            }
+        }
+        if (inventory.getContainerSize() > 40 && inventory.getItem(40).is(Items.TNT)
+                && inventory.getItem(40).getCount() > largest) return 40;
+        return slot;
     }
 
     private static void beginReload(Minecraft client) {
@@ -402,7 +461,7 @@ public final class TntManager {
     private static void reload(Minecraft client) {
         switch (state) {
             case TNT_EQUIP -> {
-                if (ticks >= 3 && client.player.getMainHandItem().is(Items.TNT)) enter(State.BUILD);
+                if (ticks >= 3 && (placedDuringTntEquip || client.player.getMainHandItem().is(Items.TNT) || countTnt(client) == 0)) enter(State.BUILD);
             }
             case SHOP -> {
                 if (!hasContainer(client) || ticks < 4) return;
