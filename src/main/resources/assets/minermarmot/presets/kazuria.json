@@ -45,43 +45,5 @@
             "privateMessageVolume": 1.0,
             "privateMessageRepeat": 3
         }
-    },
-    "portals": {
-        "defaults": {
-            "displayedWaypointCount": 3,
-            "waypointDisplayDistance": 256
-        },
-        "types": [
-            {
-                "id": "aether",
-                "displayName": "Portail Aether",
-                "block": "minecraft:sea_lantern",
-                "shape": "pair",
-                "size": 2,
-                "markerOffsetY": -7,
-                "monitor": false,
-                "icon": {
-                    "item": "minecraft:paper",
-                    "components": {
-                        "minecraft:item_model": "nexo:larme_seraphin"
-                    }
-                }
-            },
-            {
-                "id": "warden",
-                "displayName": "Portail Warden",
-                "block": "minecraft:end_portal",
-                "shape": "square",
-                "size": 3,
-                "markerOffsetY": 0,
-                "monitor": false,
-                "icon": {
-                    "item": "minecraft:paper",
-                    "components": {
-                        "minecraft:item_model": "nexo:familier_warden"
-                    }
-                }
-            }
-        ]
     }
 }

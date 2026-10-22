@@ -88,10 +88,5 @@
     "minermarmot.tnt.transferBlocked": "Pose de TNT arrêtée : transfert bloqué, vérifiez la place dans l’inventaire.",
     "minermarmot.tnt.insufficient": "Pose de TNT arrêtée : la shulker ne fournit pas assez de TNT.",
     "minermarmot.tnt.deliveryMissing": "Pose de TNT arrêtée : shulker achetée introuvable.",
-    "minermarmot.portal.title": "Portail",
-    "minermarmot.portal.waypointCount": "Nombre de waypoints portail",
-    "minermarmot.portal.waypointDistance": "Distance de rendu des portails",
-    "minermarmot.portal.reset": "Réinitialiser les portails découverts",
-    "minermarmot.portal.topWaypoints": "Top %s portails",
     "minermarmot.config.autoBoostInterval": "Intervalle entre les boosts (ms)"
 }

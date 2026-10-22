@@ -10,8 +10,6 @@ import com.minermarmot.client.features.mining.MiningFeature;
 import com.minermarmot.client.screen.widget.ConfigSectionWidget;
 import com.minermarmot.client.features.alerts.AlertIcon;
 import com.minermarmot.client.features.alerts.SoundSelectionScreen;
-import com.minermarmot.client.features.portal.PortalManager;
-import com.minermarmot.client.features.portal.PortalPreset;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -44,7 +42,6 @@ public class ConfigScreen extends ConfigMenuScreen {
     private boolean alertsExpanded;
     private boolean tntExpanded = true;
     private boolean displayExpanded;
-    private boolean portalsExpanded;
     private boolean saveFailed;
     private OptionList options;
 
@@ -268,31 +265,7 @@ public class ConfigScreen extends ConfigMenuScreen {
             }
         }
 
-        var portals = preset.portals;
-        boolean portalMatch = matches(portalText("title").getString());
-        if (!portals.types.isEmpty() && (portalMatch || matches(portalText("waypointCount").getString())
-                || matches(portalText("waypointDistance").getString()) || matches(portalText("reset").getString())
-                || portals.types.stream().anyMatch(type -> matches(type.id) || matches(type.displayName)))) {
-            options.addOption(new ConfigSectionWidget(0, 0, 100, portalText("title").getString(), portalsExpanded || !query.isBlank(), () -> {
-                portalsExpanded = !portalsExpanded;
-                refreshOptions();
-            }));
-            if (portalsExpanded || !query.isBlank()) {
-                if (portalMatch || matches(portalText("waypointCount").getString())) {
-                    options.addNumber(portalText("waypointCount"), config.portals.displayedWaypointCount, 0, 100,
-                            value -> config.portals.displayedWaypointCount = value);
-                }
-                if (portalMatch || matches(portalText("waypointDistance").getString())) {
-                    options.addNumber(portalText("waypointDistance"), config.portals.waypointDisplayDistance, 1, 4096,
-                            value -> config.portals.waypointDisplayDistance = value);
-                }
-                portals.types.stream().filter(type -> portalMatch || matches(type.id) || matches(type.displayName))
-                        .forEach(options::addPortal);
-                if (portalMatch || matches(portalText("reset").getString())) {
-                    options.addOption(Button.builder(portalText("reset"), button -> PortalManager.reset()).bounds(0, 0, 180, 20).build());
-                }
-            }
-        }
+
     }
 
     private void applyChanges() {
@@ -311,9 +284,7 @@ public class ConfigScreen extends ConfigMenuScreen {
         return Component.translatable("minermarmot.alerts." + key);
     }
 
-    private static Component portalText(String key) {
-        return Component.translatable("minermarmot.portal." + key);
-    }
+
 
 
 
@@ -373,7 +344,6 @@ public class ConfigScreen extends ConfigMenuScreen {
 
 
 
-        void addPortal(PortalPreset.Type type) { addEntry(new PortalEntry(type)); }
 
 
 
@@ -404,42 +374,6 @@ public class ConfigScreen extends ConfigMenuScreen {
     }
 
     private abstract static class OptionEntry extends ContainerObjectSelectionList.Entry<OptionEntry> {}
-
-    private final class PortalEntry extends OptionEntry {
-        private final PortalPreset.Type type;
-        private final CycleButton<Boolean> monitor;
-
-        PortalEntry(PortalPreset.Type type) {
-            this.type = type;
-            Component label = Component.literal(type.displayName).append(" · ").append(alertText("column.monitor"));
-            monitor = toggleBuilder(Boolean.TRUE.equals(config.portals.monitors.get(type.id)))
-                    .create(0, 0, 70, 20, label, (button, value) -> {
-                        config.portals.monitors.put(type.id, value);
-                        applyChanges();
-                    });
-            monitor.setTooltip(Tooltip.create(label));
-        }
-
-        @Override
-        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float partialTick) {
-            int rowWidth = Math.min(500, getContentWidth());
-            int left = getContentX() + (getContentWidth() - rowWidth) / 2;
-            graphics.item(type.icon.stack(), left, getContentY() + 2);
-            graphics.text(font, font.plainSubstrByWidth(type.displayName, rowWidth - 100), left + 22, getContentY() + 6,
-                    monitor.getValue() ? 0xFFFFFFFF : 0xFF888888);
-            if (hovered && mouseX < left + rowWidth - 74) graphics.setTooltipForNextFrame(Component.literal(type.displayName), mouseX, mouseY);
-            monitor.setPosition(left + rowWidth - 70, getContentY());
-            renderWidget(monitor, graphics, mouseX, mouseY, partialTick);
-        }
-
-        @Override
-        public List<? extends GuiEventListener> children() { return List.of(monitor); }
-
-        @Override
-        public List<? extends NarratableEntry> narratables() { return List.of(monitor); }
-    }
-
-
 
     private final class WidgetEntry extends OptionEntry {
         private final AbstractWidget widget;

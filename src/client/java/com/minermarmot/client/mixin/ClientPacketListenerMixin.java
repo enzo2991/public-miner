@@ -2,11 +2,8 @@ package com.minermarmot.client.mixin;
 
 import com.minermarmot.client.features.tnt.TntManager;
 import com.minermarmot.client.features.alerts.PlayerAlertManager;
-import com.minermarmot.client.features.portal.PortalManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
-import net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,22 +21,5 @@ abstract class ClientPacketListenerMixin {
         if (!Minecraft.getInstance().player.isDeadOrDying()) {
             PlayerAlertManager.worldChanged();
         }
-    }
-
-
-
-
-
-    // Chunk events do not report individual block updates received from the server.
-    @Inject(method = "handleBlockUpdate", at = @At("TAIL"))
-    private void minermarmot$updatePortal(ClientboundBlockUpdatePacket packet, CallbackInfo ci) {
-        PortalManager.blockChanged(packet.getPos(), packet.getBlockState());
-    }
-
-    @Inject(method = "handleChunkBlocksUpdate", at = @At("TAIL"))
-    private void minermarmot$updateSectionAlerts(ClientboundSectionBlocksUpdatePacket packet, CallbackInfo ci) {
-        packet.runUpdates((pos, state) -> {
-            PortalManager.blockChanged(pos, state);
-        });
     }
 }

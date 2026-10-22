@@ -109,10 +109,7 @@ public final class ConfigManager {
             preset.tnt = GSON.fromJson(GSON.toJson(legacyTemplate.tnt),
                     com.minermarmot.client.features.tnt.TntPreset.class);
         }
-        if (legacyTemplate != null && !document.getAsJsonObject().has("portals")) {
-            preset.portals = GSON.fromJson(GSON.toJson(legacyTemplate.portals),
-                    com.minermarmot.client.features.portal.PortalPreset.class);
-        }
+
 
         if (legacyTemplate != null && !document.getAsJsonObject().has("playerAlerts")) {
             // Supply new bundled alerts in memory without overwriting customized preset files.

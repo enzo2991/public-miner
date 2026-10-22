@@ -7,7 +7,6 @@ import com.minermarmot.client.features.display.DisplayRenderer;
 import com.minermarmot.client.config.ConfigManager;
 import com.minermarmot.client.features.mining.MiningManager;
 import com.minermarmot.client.features.alerts.PlayerAlertManager;
-import com.minermarmot.client.features.portal.PortalManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
@@ -22,7 +21,6 @@ public class minermarmotClient implements ClientModInitializer {
         ConfigManager.initialize();
         VersionCheck.initialize();
         MiningManager.initialize();
-        PortalManager.initialize();
         PlayerAlertManager.initialize();
         TntManager.initialize();
         DisplayRenderer.initialize();

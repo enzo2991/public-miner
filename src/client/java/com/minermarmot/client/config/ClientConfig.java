@@ -5,7 +5,6 @@ import com.minermarmot.client.features.mining.MiningConfig;
 import com.minermarmot.client.features.mining.MiningFeature;
 
 import com.minermarmot.client.features.alerts.PlayerAlertsConfig;
-import com.minermarmot.client.features.portal.PortalConfig;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,8 +18,6 @@ public final class ClientConfig {
     public boolean objectivesOnRight;
     public PlayerAlertsConfig playerAlerts;
     public Map<String, PlayerAlertsConfig> playerAlertPresets = new LinkedHashMap<>();
-    public PortalConfig portals;
-    public Map<String, PortalConfig> portalPresets = new LinkedHashMap<>();
 
     public ClientConfig copy() {
         ClientConfig copy = new ClientConfig();
@@ -33,8 +30,6 @@ public final class ClientConfig {
         copy.objectivesOnRight = objectivesOnRight;
         copy.playerAlerts = playerAlerts == null ? null : playerAlerts.copy();
         playerAlertPresets.forEach((id, settings) -> copy.playerAlertPresets.put(id, settings.copy()));
-        copy.portals = portals == null ? null : portals.copy();
-        portalPresets.forEach((id, settings) -> copy.portalPresets.put(id, settings.copy()));
         return copy;
     }
 
@@ -43,14 +38,11 @@ public final class ClientConfig {
         if (playerAlerts != null) {
             playerAlertPresets.put(preset, playerAlerts.copy());
         }
-        if (portals != null) portalPresets.put(preset, portals.copy());
         preset = id;
         mining = selected.defaults.copy();
         selectTntMode(selected);
         playerAlerts = playerAlertPresets.containsKey(id) ? playerAlertPresets.get(id).copy() : selected.playerAlerts.newConfig();
         selected.playerAlerts.initialize(playerAlerts);
-        portals = portalPresets.containsKey(id) ? portalPresets.get(id).copy() : selected.portals.newConfig();
-        selected.portals.initialize(portals);
     }
 
     public void resetPreset(MiningPreset selected) {
@@ -63,15 +55,11 @@ public final class ClientConfig {
                 ? TntMode.CARPET : TntMode.BUILDER;
         playerAlerts = selected.playerAlerts.newConfig();
         playerAlertPresets.remove(preset);
-        portals = selected.portals.newConfig();
-        portalPresets.remove(preset);
     }
 
     public void validate(MiningPreset selected) {
         if (preset == null || mining == null || playerAlertPresets == null || playerAlertPresets.size() > 128
-                || playerAlertPresets.containsKey(null) || playerAlertPresets.containsValue(null)
-                || portalPresets == null || portalPresets.size() > 128
-                || portalPresets.containsKey(null) || portalPresets.containsValue(null)) {
+                || playerAlertPresets.containsKey(null) || playerAlertPresets.containsValue(null)) {
             throw new IllegalArgumentException("Invalid client settings");
         }
         mining.validate();
@@ -90,10 +78,6 @@ public final class ClientConfig {
         playerAlerts.validate();
         playerAlertPresets.values().forEach(PlayerAlertsConfig::validate);
         selected.playerAlerts.initialize(playerAlerts);
-        if (portals == null) portals = selected.portals.newConfig();
-        portals.validate();
-        portalPresets.values().forEach(PortalConfig::validate);
-        selected.portals.initialize(portals);
     }
 
     private void selectTntMode(MiningPreset selected) {
