@@ -3,12 +3,10 @@
     "package": "com.minermarmot.client.mixin",
     "compatibilityLevel": "JAVA_25",
     "client": [
-        "KeyboardInputMixin",
         "LocalPlayerMixin",
         "MinecraftMixin",
         "EntityMixin",
         "GuiMixin",
-        "ClientPacketListenerMixin",
         "SoundEngineMixin",
         "AudioChannelAccessor"
     ],
