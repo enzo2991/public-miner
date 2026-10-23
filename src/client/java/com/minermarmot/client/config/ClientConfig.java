@@ -15,6 +15,7 @@ public final class ClientConfig {
     public boolean displayFps;
     public boolean displayPosition;
     public boolean displayObjectives;
+    public boolean displayScrollObjectives;
     public boolean objectivesOnRight;
     public PlayerAlertsConfig playerAlerts;
     public Map<String, PlayerAlertsConfig> playerAlertPresets = new LinkedHashMap<>();
@@ -27,6 +28,7 @@ public final class ClientConfig {
         copy.displayFps = displayFps;
         copy.displayPosition = displayPosition;
         copy.displayObjectives = displayObjectives;
+        copy.displayScrollObjectives = displayScrollObjectives;
         copy.objectivesOnRight = objectivesOnRight;
         copy.playerAlerts = playerAlerts == null ? null : playerAlerts.copy();
         playerAlertPresets.forEach((id, settings) -> copy.playerAlertPresets.put(id, settings.copy()));
@@ -49,6 +51,7 @@ public final class ClientConfig {
         displayFps = false;
         displayPosition = false;
         displayObjectives = false;
+        displayScrollObjectives = false;
         objectivesOnRight = false;
         mining = selected.defaults.copy();
         tntMode = selected.tnt.carpet && !selected.tnt.builder

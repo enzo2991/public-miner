@@ -4,6 +4,7 @@ import com.minermarmot.client.integration.VersionCheck;
 
 import com.minermarmot.client.minermarmotClient;
 import com.minermarmot.client.config.ConfigManager;
+import com.minermarmot.client.screen.ConfigMenuScreen;
 import com.minermarmot.client.features.mining.MiningManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
@@ -84,6 +85,7 @@ public final class TntManager {
 
     public static boolean handleToggleKey(InputConstants.Key key) {
         Minecraft client = Minecraft.getInstance();
+        if (client.gui.screen() instanceof ConfigMenuScreen) return false;
         if (toggleKey != null && toggleKey.matches(key) && client.player != null
                 && !(client.gui.screen() instanceof KeyBindsScreen) && !(client.gui.screen() instanceof ChatScreen)) {
             setActive(!active);
@@ -130,7 +132,8 @@ public final class TntManager {
 
     private static void startTick(Minecraft client) {
         while (toggleKey.consumeClick()) {
-            if (!(client.gui.screen() instanceof ChatScreen)) {
+            if (!(client.gui.screen() instanceof ConfigMenuScreen)
+                    && !(client.gui.screen() instanceof ChatScreen) && !(client.gui.screen() instanceof KeyBindsScreen)) {
                 setActive(!active);
             }
         }

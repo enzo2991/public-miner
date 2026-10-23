@@ -3,6 +3,7 @@ package com.minermarmot.client.features.mining;
 import com.minermarmot.client.config.ConfigManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
@@ -18,10 +19,12 @@ final class DolphinMiner {
     private Float returningPitch;
     private boolean active;
     private BlockPos exitBlock;
+    private BlockPos exitBoostTarget;
+    private boolean preparingExit;
+    private boolean turnBoostPending;
     private double highestY;
     private int minY;
     private int maxY;
-    private boolean forwardBoost;
     private Float originalPitch;
     private boolean originalFlying;
 
@@ -57,9 +60,11 @@ final class DolphinMiner {
         }
         if (path.phase() == DolphinPath.Phase.ASCENDING) {
             highestY = Math.max(highestY, player.getY());
-            if (exitBlock != null && player.getY() < highestY - 3) {
+            if ((exitBlock != null || preparingExit) && player.getY() < highestY - 3) {
                 path.recoverFromUpperFall(player.getX(), player.getY(), player.getZ());
                 exitBlock = null;
+                preparingExit = false;
+                exitBoostTarget = null;
             }
         }
         boolean ascending = path.phase() == DolphinPath.Phase.ASCENDING;
@@ -76,13 +81,29 @@ final class DolphinMiner {
         // Clear the last block and climb above its roof before committing to the horizontal exit.
         if (ascending && exitBlock != null && client.level.getBlockState(exitBlock).isAir()
                 && vertical == null && player.getY() >= exitBlock.getY() + 1.1) endVertical = true;
+        double exitY = exitBlock != null && client.level.getBlockState(exitBlock).isAir()
+                ? Math.min(maxY, exitBlock.getY() + 1.1) : maxY;
+        if (ascending && !preparingExit && vertical == null
+                && (exitBlock == null || client.level.getBlockState(exitBlock).isAir())
+                && exitY - player.getY() <= player.blockInteractionRange()
+                && anticipatesExit(exitY - player.getY(), player.getDeltaMovement().y, settings.dolphinCameraRotationMs)) {
+            preparingExit = true;
+            turnBoostPending = true;
+        }
+        if (vertical != null) {
+            preparingExit = false;
+            turnBoostPending = false;
+        }
         boolean ready = path.update(player.getX(), player.getY(), player.getZ(), endVertical,
                 bounds.getMinX(), bounds.getMaxX(), bounds.getMinZ(), bounds.getMaxZ(),
                 MiningManager.enabled(MiningFeature.WORLD_BORDER) ? settings.worldBorderDistance : 0,
                 settings);
-        if (ascending && path.horizontal()) forwardBoost = true;
+        if (ascending && path.horizontal() && !preparingExit) turnBoostPending = true;
+        if (!path.boosts()) turnBoostPending = false;
         if (!ascending || path.phase() != DolphinPath.Phase.ASCENDING) {
             exitBlock = null;
+            exitBoostTarget = null;
+            preparingExit = false;
             highestY = player.getY();
         }
         aimPitch = findPitch(client);
@@ -91,6 +112,7 @@ final class DolphinMiner {
     }
 
     private float findPitch(Minecraft client) {
+        if (preparingExit) return 0;
         if (path.phase() != DolphinPath.Phase.ASCENDING) return path.pitch();
         // Reacquire a visible upper face during ascent; forward passages retain horizontal aiming.
         for (float pitch : new float[]{-90, -85, -80, -75, -70, -65, -60, -45, -30, -15}) {
@@ -188,7 +210,8 @@ final class DolphinMiner {
     }
 
     private void turnCamera(Minecraft client, float yaw, float pitch) {
-        camera.tick(client.player.getYRot(), client.player.getXRot(), yaw, pitch);
+        camera.tick(client.player.getYRot(), client.player.getXRot(), yaw, pitch,
+                ConfigManager.current().mining.dolphinCameraRotationMs);
         client.player.setYRot(camera.yaw());
         client.player.setXRot(camera.pitch());
     }
@@ -208,7 +231,7 @@ final class DolphinMiner {
 
     void cancelCameraRestore() { returningPitch = null; }
     boolean smoothsCamera() { return active || returningPitch != null; }
-    boolean waitsForAim() { return active && path.boosts() && !camera.ready(); }
+    boolean waitsForAim() { return active && path.boosts() && (!boosts() || turnBoostPending && !camera.ready()); }
     Vec2 movementInput(float cameraYaw) { return forwardInput(path.yaw(), cameraYaw); }
 
     static Vec2 forwardInput(float heading, float cameraYaw) {
@@ -218,12 +241,30 @@ final class DolphinMiner {
 
     boolean active() { return active; }
     boolean moves() { return active && path.horizontal(); }
-    boolean boosts() { return active && path.boosts() && camera.ready(); }
+    boolean boosts() {
+        if (!active || !path.boosts()) return false;
+        // Keep an upward component until the roof is cleared; border turns must first align their heading.
+        if (preparingExit || path.horizontal() && !camera.ready())
+            return canBoostWhileTurning(camera.yaw(), camera.pitch(), path.yaw());
+        return camera.ready();
+    }
 
-    boolean takeForwardBoost() {
-        boolean boost = forwardBoost;
-        forwardBoost = false;
-        return boost;
+    static boolean canBoostWhileTurning(float yaw, float pitch, float heading) {
+        return pitch >= -90 && pitch < 0 && Math.abs(Mth.wrapDegrees(yaw - heading)) < 0.001f;
+    }
+
+    static boolean anticipatesExit(double remainingHeight, double upwardSpeed, int rotationMs) {
+        return upwardSpeed > 0 && remainingHeight <= upwardSpeed * Math.ceil(Math.max(200, rotationMs) / 50.0);
+    }
+
+    boolean waitsForExitBoost(BlockPos pos) {
+        return active && path.phase() == DolphinPath.Phase.ASCENDING
+                && (pos.equals(exitBlock) || pos.getY() >= maxY) && !pos.equals(exitBoostTarget);
+    }
+
+    void boostRequested(BlockPos pos) {
+        if (waitsForExitBoost(pos)) exitBoostTarget = pos.immutable();
+        if (preparingExit || path.horizontal()) turnBoostPending = false;
     }
 
     void reset(Minecraft client, boolean restoreState) {
@@ -239,7 +280,9 @@ final class DolphinMiner {
         }
         active = false;
         exitBlock = null;
-        forwardBoost = false;
+        exitBoostTarget = null;
+        preparingExit = false;
+        turnBoostPending = false;
         originalPitch = null;
         originalFlying = false;
     }

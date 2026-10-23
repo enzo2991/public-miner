@@ -213,7 +213,9 @@ public class ConfigScreen extends ConfigMenuScreen {
         boolean showPosition = matches(text("display").getString()) || matches(text("displayPosition").getString());
         boolean showObjectives = matches(text("display").getString()) || matches(text("displayObjectives").getString())
                 || matches(text("objectivesSide").getString());
-        if (showFps || showPosition || showObjectives) {
+        boolean showScrollObjectives = matches(text("display").getString()) || matches(text("displayScrollObjectives").getString())
+                || matches(text("objectivesSide").getString());
+        if (showFps || showPosition || showObjectives || showScrollObjectives) {
             options.addOption(new ConfigSectionWidget(0, 0, 100, text("display").getString(), displayExpanded || !query.isBlank(), () -> {
                 displayExpanded = !displayExpanded;
                 refreshOptions();
@@ -239,6 +241,15 @@ public class ConfigScreen extends ConfigMenuScreen {
                                 config.displayObjectives = value;
                                 applyChanges();
                             }));
+                }
+                if (showScrollObjectives) {
+                    options.addLabeledOption(text("displayScrollObjectives"), toggleBuilder(config.displayScrollObjectives)
+                            .create(0, 0, 70, 20, text("displayScrollObjectives"), (button, value) -> {
+                                config.displayScrollObjectives = value;
+                                applyChanges();
+                            }));
+                }
+                if (showObjectives || showScrollObjectives) {
                     options.addLabeledOption(text("objectivesSide"), CycleButton.builder(ConfigScreen::text,
                                     config.objectivesOnRight ? "right" : "left").withValues("left", "right").displayOnlyValue()
                             .create(0, 0, 70, 20, text("objectivesSide"), (button, value) -> {

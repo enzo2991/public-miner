@@ -6,6 +6,7 @@ import com.minermarmot.client.features.alerts.AlertSounds;
 import com.minermarmot.client.features.tnt.TntManager;
 import com.minermarmot.client.minermarmotClient;
 import com.minermarmot.client.config.ConfigManager;
+import com.minermarmot.client.screen.ConfigMenuScreen;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
@@ -61,6 +62,7 @@ public final class MiningManager {
 
     public static boolean handleToggleKey(InputConstants.Key key) {
         Minecraft client = Minecraft.getInstance();
+        if (client.gui.screen() instanceof ConfigMenuScreen) return false;
         if (INSTANCE.toggleKey != null && INSTANCE.toggleKey.matches(key) && canAct(client) && !(client.gui.screen() instanceof KeyBindsScreen) && !(client.gui.screen() instanceof ChatScreen)) {
             toggle();
             return true;
@@ -189,10 +191,12 @@ public final class MiningManager {
 
     private void startTick(Minecraft client) {
         while (toggleKey.consumeClick()) {
-            if (!(client.gui.screen() instanceof ChatScreen) && !(client.gui.screen() instanceof KeyBindsScreen)) toggle();
+            if (!(client.gui.screen() instanceof ConfigMenuScreen)
+                    && !(client.gui.screen() instanceof ChatScreen) && !(client.gui.screen() instanceof KeyBindsScreen)) toggle();
         }
         while (dolphinKey.consumeClick()) {
-            if (!(client.gui.screen() instanceof ChatScreen) && !(client.gui.screen() instanceof KeyBindsScreen)) toggleDolphin();
+            if (!(client.gui.screen() instanceof ConfigMenuScreen)
+                    && !(client.gui.screen() instanceof ChatScreen) && !(client.gui.screen() instanceof KeyBindsScreen)) toggleDolphin();
         }
         if (level != client.level || player != client.player || !canAct(client)) {
             stop(client);
@@ -215,7 +219,6 @@ public final class MiningManager {
                 AlertSounds.playSound("minecraft:block.note_block.bell");
                 return;
             }
-            if (dolphin.takeForwardBoost()) boostElapsedTicks = Integer.MAX_VALUE;
             client.player.setSprinting(dolphin.moves());
             sprinting = dolphin.moves();
             return;
@@ -293,11 +296,13 @@ public final class MiningManager {
         if (boostElapsedTicks < Integer.MAX_VALUE) boostElapsedTicks++;
         // The server must receive the block-dependent boost before its mining packet removes the target.
         if (isDolphin() && dolphin.boosts() && crosshair != null
+                && MiningTargets.canMine(client, crosshair.getBlockPos())
                 && client.level.getFluidState(crosshair.getBlockPos()).isEmpty()
                 && boostElapsedTicks >= ConfigManager.current().mining.autoBoostIntervalTicks()
                 && !client.player.isUsingItem() && !stopMovement) {
             boostElapsedTicks = 0;
             useItem(client);
+            dolphin.boostRequested(crosshair.getBlockPos());
         }
         mineBlock(client, crosshair);
         if (!isDolphin() && enabled(MiningFeature.AUTO_BOOST)
@@ -316,6 +321,7 @@ public final class MiningManager {
             stopBreaking(client);
             return;
         }
+        if (isDolphin() && dolphin.waitsForExitBoost(hit.getBlockPos())) return;
         // A single controller preserves vanilla break progress across all mining actions.
         target = hit.getBlockPos().immutable();
         if (client.gameMode.continueDestroyBlock(target, hit.getDirection())) {

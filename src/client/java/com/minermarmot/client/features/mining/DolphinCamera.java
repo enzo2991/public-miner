@@ -6,16 +6,19 @@ final class DolphinCamera {
     private boolean initialized;
     private float startYaw, startPitch, targetYaw, targetPitch, yaw, pitch;
     private int elapsed, duration;
+    private int rotation90Ms;
 
-    void tick(float currentYaw, float currentPitch, float wantedYaw, float wantedPitch) {
+    void tick(float currentYaw, float currentPitch, float wantedYaw, float wantedPitch, int quarterTurnMs) {
+        quarterTurnMs = Math.max(200, quarterTurnMs);
         if (!matches(currentYaw, currentPitch) || Math.abs(Mth.wrapDegrees(targetYaw - wantedYaw)) > 0.001f
-                || Math.abs(targetPitch - wantedPitch) > 0.001f) {
+                || Math.abs(targetPitch - wantedPitch) > 0.001f || rotation90Ms != quarterTurnMs) {
             initialized = true;
             startYaw = currentYaw; startPitch = currentPitch;
             targetYaw = currentYaw + Mth.wrapDegrees(wantedYaw - currentYaw);
             targetPitch = wantedPitch;
             float distance = Math.max(Math.abs(targetYaw - startYaw), Math.abs(targetPitch - startPitch));
-            duration = distance < 0.001f ? 0 : Math.max(2, (int) Math.ceil(distance / 45));
+            rotation90Ms = quarterTurnMs;
+            duration = distance < 0.001f ? 0 : (int) Math.ceil(Math.max(1, distance / 90.0) * quarterTurnMs / 50.0);
             elapsed = 0;
         }
         float t = duration == 0 ? 1 : Math.min(1, (float) ++elapsed / duration);

@@ -23,7 +23,9 @@ public final class DolphinSettingsControls {
                 new ValueInput("dolphinMaxY", settings.dolphinMaxY, value -> value > settings.dolphinMinY,
                         value -> settings.dolphinMaxY = value, changed),
                 new ValueInput("dolphinAdvanceBlocks", settings.dolphinAdvanceBlocks, value -> value >= 1,
-                        value -> settings.dolphinAdvanceBlocks = value, changed));
+                        value -> settings.dolphinAdvanceBlocks = value, changed),
+                new ValueInput("dolphinCameraRotationMs", settings.dolphinCameraRotationMs, value -> value >= 200,
+                        value -> settings.dolphinCameraRotationMs = value, changed));
     }
 
     public List<? extends EditBox> children() { return inputs; }
@@ -32,8 +34,8 @@ public final class DolphinSettingsControls {
                        boolean hovered, float tick) {
         int rowWidth = Math.min(500, width);
         int left = x + (width - rowWidth) / 2;
-        int inputWidth = Math.max(24, Math.min(70, (rowWidth - 80) / 3 - 8));
-        int controlsX = left + rowWidth - 3 * (inputWidth + 8) + 8;
+        int inputWidth = Math.max(24, Math.min(70, (rowWidth - 80) / inputs.size() - 8));
+        int controlsX = left + rowWidth - inputs.size() * (inputWidth + 8) + 8;
         Component label = Component.translatable("minermarmot.mining.dolphin");
         graphics.text(font, font.plainSubstrByWidth(label.getString(), Math.max(0, controlsX - left - 8)), left, y + 18, 0xFFFFFFFF);
         for (int i = 0; i < inputs.size(); i++) {

@@ -12,6 +12,7 @@ public final class MiningConfig {
     public int dolphinMinY = 10;
     public int dolphinMaxY = 230;
     public int dolphinAdvanceBlocks = 5;
+    public int dolphinCameraRotationMs = 200;
 
     public MiningConfig copy() {
         MiningConfig copy = new MiningConfig();
@@ -21,12 +22,15 @@ public final class MiningConfig {
         copy.dolphinMinY = dolphinMinY;
         copy.dolphinMaxY = dolphinMaxY;
         copy.dolphinAdvanceBlocks = dolphinAdvanceBlocks;
+        copy.dolphinCameraRotationMs = dolphinCameraRotationMs;
         return copy;
     }
 
     public int autoBoostIntervalTicks() { return Math.max(1, (autoBoostIntervalMs + 49) / 50); }
 
     public void validate() {
+        // Upgrade older camera timings without discarding the rest of the saved settings.
+        dolphinCameraRotationMs = Math.max(200, dolphinCameraRotationMs);
         if (enabled == null || worldBorderDistance < 0 || autoBoostIntervalMs < 0 || autoBoostIntervalMs > 60000
                 || dolphinMinY >= dolphinMaxY || dolphinAdvanceBlocks < 1) {
             throw new IllegalArgumentException("Invalid mining settings");
