@@ -20,7 +20,9 @@ abstract class MinecraftMixin {
     // Fabric exposes no callback for the delay between held right-click actions.
     @Inject(method = "tick", at = @At("HEAD"))
     private void minermarmot$removePlacementDelay(CallbackInfo ci) {
-        if (MiningManager.enabled(MiningFeature.PLACEMENT_WITHOUT_DELAY)) rightClickDelay = 0;
+        if (MiningManager.enabled(MiningFeature.PLACEMENT_WITHOUT_DELAY)) {
+            rightClickDelay = 0;
+        }
     }
 
     // Vanilla would abort the shared target whenever the attack key is released.
@@ -40,7 +42,11 @@ abstract class MinecraftMixin {
     }
 
     @Inject(method = "handleGlobalKeyPress", at = @At("RETURN"), cancellable = true)
-    private void minermarmot$toggleMiningInScreens(InputConstants.Key key, boolean controlDown, CallbackInfoReturnable<Boolean> ci) {
-        if (!ci.getReturnValue() && (MiningManager.handleToggleKey(key) || TntManager.handleToggleKey(key))) ci.setReturnValue(true);
+    private void minermarmot$toggleMiningInScreens(InputConstants.Key key, boolean controlDown,
+                                                 CallbackInfoReturnable<Boolean> ci) {
+        if (!ci.getReturnValue() && (MiningManager.handleToggleKey(key)
+                || TntManager.handleToggleKey(key))) {
+            ci.setReturnValue(true);
+        }
     }
 }

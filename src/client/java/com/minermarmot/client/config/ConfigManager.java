@@ -101,6 +101,10 @@ public final class ConfigManager {
             throw new IllegalArgumentException("Empty mining preset");
         }
         if (legacyTemplate != null && preset.features != null
+                && !preset.features.containsKey(MiningFeature.DOLPHIN)) {
+            preset.features.put(MiningFeature.DOLPHIN, legacyTemplate.allows(MiningFeature.DOLPHIN));
+        }
+        if (legacyTemplate != null && preset.features != null
                 && !preset.features.containsKey(MiningFeature.PLACEMENT_WITHOUT_DELAY)) {
             preset.features.put(MiningFeature.PLACEMENT_WITHOUT_DELAY,
                     legacyTemplate.allows(MiningFeature.PLACEMENT_WITHOUT_DELAY));

@@ -13,8 +13,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 abstract class LocalPlayerMixin {
     // LocalPlayer bypasses vanilla rotation interpolation, with no camera event to restore it.
     @Inject(method = "getViewYRot", at = @At("HEAD"), cancellable = true)
-    private void minermarmot$smoothCarpetCamera(float partialTick, CallbackInfoReturnable<Float> callback) {
-        if (TntManager.smoothsCamera()) callback.setReturnValue(((LocalPlayer) (Object) this).getYRot(partialTick));
+    private void minermarmot$smoothCameraYaw(float partialTick, CallbackInfoReturnable<Float> callback) {
+        if (TntManager.smoothsCamera() || MiningManager.smoothsCamera())
+            callback.setReturnValue(((LocalPlayer) (Object) this).getYRot(partialTick));
+    }
+
+    // LocalPlayer also bypasses pitch interpolation during automated vertical turns.
+    @Inject(method = "getViewXRot", at = @At("HEAD"), cancellable = true)
+    private void minermarmot$smoothCameraPitch(float partialTick, CallbackInfoReturnable<Float> callback) {
+        if (MiningManager.smoothsCamera()) callback.setReturnValue(((LocalPlayer) (Object) this).getXRot(partialTick));
     }
 
     // Apply positioning after vanilla physics, before the movement packet is sent.

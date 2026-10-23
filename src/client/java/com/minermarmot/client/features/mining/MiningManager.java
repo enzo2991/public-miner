@@ -1,6 +1,7 @@
 package com.minermarmot.client.features.mining;
 
 import com.minermarmot.client.integration.VersionCheck;
+import com.minermarmot.client.features.alerts.AlertSounds;
 
 import com.minermarmot.client.features.tnt.TntManager;
 import com.minermarmot.client.minermarmotClient;
@@ -21,6 +22,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.Vec2;
 import org.lwjgl.glfw.GLFW;
 
 public final class MiningManager {
@@ -28,8 +30,11 @@ public final class MiningManager {
 
     private final ObstacleMinerManager obstacles = new ObstacleMinerManager();
     private final WorldBorderManager border = new WorldBorderManager();
+    private final DolphinMiner dolphin = new DolphinMiner(border);
     private KeyMapping toggleKey;
+    private KeyMapping dolphinKey;
     private boolean running;
+    private boolean dolphinMode;
     private boolean stopMovement;
     private boolean sprinting;
     private Float lockedYaw;
@@ -44,6 +49,8 @@ public final class MiningManager {
     public static void initialize() {
         INSTANCE.toggleKey = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.minermarmot.toggleMining",
                 GLFW.GLFW_KEY_F6, minermarmotClient.KEY_CATEGORY));
+        INSTANCE.dolphinKey = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.minermarmot.toggleDolphin",
+                GLFW.GLFW_KEY_F9, minermarmotClient.KEY_CATEGORY));
         ClientTickEvents.START_CLIENT_TICK.register(INSTANCE::startTick);
         ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::endTick);
     }
@@ -58,6 +65,11 @@ public final class MiningManager {
             toggle();
             return true;
         }
+        if (INSTANCE.dolphinKey != null && INSTANCE.dolphinKey.matches(key) && canAct(client)
+                && !(client.gui.screen() instanceof KeyBindsScreen) && !(client.gui.screen() instanceof ChatScreen)) {
+            toggleDolphin();
+            return true;
+        }
         return false;
     }
 
@@ -68,34 +80,55 @@ public final class MiningManager {
 
     public static void finishMovement() {
         Minecraft client = Minecraft.getInstance();
-        if (INSTANCE.running && canAct(client) && !client.isPaused()) {
+        if (canAct(client) && !client.isPaused()) {
+            if (!INSTANCE.running) {
+                if (TntManager.isActive()) INSTANCE.dolphin.cancelCameraRestore();
+                else INSTANCE.dolphin.finishCameraRestore(client);
+                return;
+            }
+            if (isDolphin() && INSTANCE.dolphin.active()) {
+                INSTANCE.dolphin.finishMovement(client);
+                return;
+            }
+            INSTANCE.dolphin.cancelCameraRestore();
             if (enabled(MiningFeature.AUTO_CENTER_BLOCK)) {
                 INSTANCE.centerPlayer(client);
             }
-            if (enabled(MiningFeature.AUTO_FLIGHT_HEIGHT)) {
+            if (!isDolphin() && enabled(MiningFeature.AUTO_FLIGHT_HEIGHT)) {
                 INSTANCE.maintainFlightHeight(client);
             }
         }
     }
 
     public static void toggle() {
+        toggleMode(false);
+    }
+
+    public static void toggleDolphin() {
+        toggleMode(true);
+    }
+
+    private static void toggleMode(boolean dolphinMode) {
         Minecraft client = Minecraft.getInstance();
         if (!VersionCheck.isCompatible()) {
             INSTANCE.stop(client);
             client.setScreenAndShow(VersionCheck.configScreen(client.gui.screen()));
             return;
         }
-        if (INSTANCE.running) {
+        if (dolphinMode && !enabled(MiningFeature.DOLPHIN)) return;
+        if (INSTANCE.running && INSTANCE.dolphinMode == dolphinMode) {
             INSTANCE.stop(client);
         } else if (canAct(client) && ConfigManager.presets().get(ConfigManager.current().preset).features.containsValue(true)) {
+            INSTANCE.stop(client);
             TntManager.worldChanged();
             INSTANCE.running = true;
+            INSTANCE.dolphinMode = dolphinMode;
             INSTANCE.level = client.level;
             INSTANCE.player = client.player;
             if (controlsBreaking()) {
                 client.gameMode.stopDestroyBlock();
             }
-            if (enabled(MiningFeature.AUTO_FLIGHT_HEIGHT)) {
+            if (!isDolphin() && enabled(MiningFeature.AUTO_FLIGHT_HEIGHT)) {
                 INSTANCE.captureFlightHeight(client);
             }
         }
@@ -115,29 +148,39 @@ public final class MiningManager {
         }
         var settings = ConfigManager.current();
         return ConfigManager.preset(settings.preset).allows(feature)
-                && (feature == MiningFeature.WORLD_BORDER ? settings.mining.worldBorderDistance != 0
-                : settings.mining.enabled.contains(feature));
+                && (feature == MiningFeature.DOLPHIN || (feature == MiningFeature.WORLD_BORDER ? settings.mining.worldBorderDistance != 0
+                : settings.mining.enabled.contains(feature)));
     }
 
     public static boolean controlsBreaking() {
         Minecraft client = Minecraft.getInstance();
         return INSTANCE.running && canAct(client) && (enabled(MiningFeature.AUTO_MINE)
+                || isDolphin()
                 || enabled(MiningFeature.OBSTACLE_MINER)
                 || INSTANCE.border.isTurning());
     }
 
     public static boolean controlsMovement() {
         return INSTANCE.running && canAct(Minecraft.getInstance())
-                && (enabled(MiningFeature.AUTO_SPRINT) || INSTANCE.border.isTurning() || INSTANCE.stopMovement);
+                && (isDolphin() || enabled(MiningFeature.AUTO_SPRINT) || INSTANCE.border.isTurning() || INSTANCE.stopMovement);
     }
 
     public static boolean shouldMove() {
-        return !INSTANCE.stopMovement;
+        return !INSTANCE.stopMovement && (!isDolphin() || INSTANCE.dolphin.moves());
     }
+
+    public static Vec2 movementInput() {
+        if (!shouldMove()) return Vec2.ZERO;
+        return isDolphin() ? INSTANCE.dolphin.movementInput(Minecraft.getInstance().player.getYRot()) : new Vec2(0, 1);
+    }
+
+    public static boolean smoothsCamera() { return INSTANCE.dolphin.smoothsCamera() && canAct(Minecraft.getInstance()); }
+
+    public static boolean isDolphin() { return INSTANCE.running && INSTANCE.dolphinMode; }
 
     public static boolean locksCamera() {
         return INSTANCE.running && canAct(Minecraft.getInstance())
-                && (enabled(MiningFeature.AUTO_CAMERA_LOCK) || INSTANCE.border.isTurning());
+                && (isDolphin() || enabled(MiningFeature.AUTO_CAMERA_LOCK) || INSTANCE.border.isTurning());
     }
 
     private static boolean canAct(Minecraft client) {
@@ -146,7 +189,10 @@ public final class MiningManager {
 
     private void startTick(Minecraft client) {
         while (toggleKey.consumeClick()) {
-            if (!(client.gui.screen() instanceof ChatScreen)) toggle();
+            if (!(client.gui.screen() instanceof ChatScreen) && !(client.gui.screen() instanceof KeyBindsScreen)) toggle();
+        }
+        while (dolphinKey.consumeClick()) {
+            if (!(client.gui.screen() instanceof ChatScreen) && !(client.gui.screen() instanceof KeyBindsScreen)) toggleDolphin();
         }
         if (level != client.level || player != client.player || !canAct(client)) {
             stop(client);
@@ -157,6 +203,29 @@ public final class MiningManager {
             return;
         }
         stopMovement = false;
+        if (dolphinMode && !enabled(MiningFeature.DOLPHIN)) {
+            stop(client);
+            return;
+        }
+        if (isDolphin()) {
+            lockedFlightHeight = null;
+            if (!dolphin.tick(client)) {
+                stop(client);
+                client.player.sendOverlayMessage(Component.translatable("minermarmot.mining.dolphinBlocked"));
+                AlertSounds.playSound("minecraft:block.note_block.bell");
+                return;
+            }
+            if (dolphin.takeForwardBoost()) boostElapsedTicks = Integer.MAX_VALUE;
+            client.player.setSprinting(dolphin.moves());
+            sprinting = dolphin.moves();
+            return;
+        }
+        if (dolphin.active()) {
+            dolphin.reset(client, true);
+            border.reset();
+            lockedYaw = null;
+            stopBreaking(client);
+        }
         if (enabled(MiningFeature.AUTO_CAMERA_LOCK)) {
             if (lockedYaw == null) {
                 lockedYaw = WorldBorderManager.cardinalYaw(client.player.getYRot());
@@ -206,6 +275,7 @@ public final class MiningManager {
     }
 
     private BlockHitResult findTarget(Minecraft client, BlockHitResult crosshair) {
+        if (isDolphin()) return dolphin.findTarget(client, target);
         BlockHitResult hit = null;
         if (enabled(MiningFeature.OBSTACLE_MINER) || border.isTurning()) {
             hit = obstacles.findTarget(client, Vec3.directionFromRotation(0, client.player.getYRot()), target);
@@ -220,9 +290,18 @@ public final class MiningManager {
             return;
         }
         BlockHitResult crosshair = MiningTargets.crosshair(client);
-        mineBlock(client, crosshair);
         if (boostElapsedTicks < Integer.MAX_VALUE) boostElapsedTicks++;
-        if (enabled(MiningFeature.AUTO_BOOST) && target == null && MiningTargets.crosshair(client) == null
+        // The server must receive the block-dependent boost before its mining packet removes the target.
+        if (isDolphin() && dolphin.boosts() && crosshair != null
+                && client.level.getFluidState(crosshair.getBlockPos()).isEmpty()
+                && boostElapsedTicks >= ConfigManager.current().mining.autoBoostIntervalTicks()
+                && !client.player.isUsingItem() && !stopMovement) {
+            boostElapsedTicks = 0;
+            useItem(client);
+        }
+        mineBlock(client, crosshair);
+        if (!isDolphin() && enabled(MiningFeature.AUTO_BOOST)
+                && target == null && MiningTargets.crosshair(client) == null
                 && boostElapsedTicks >= ConfigManager.current().mining.autoBoostIntervalTicks()
                 && !client.player.isUsingItem() && !stopMovement) {
             boostElapsedTicks = 0;
@@ -231,6 +310,7 @@ public final class MiningManager {
     }
 
     private void mineBlock(Minecraft client, BlockHitResult crosshair) {
+        if (isDolphin() && (client.player.isUsingItem() || dolphin.waitsForAim()) && !stopMovement) return;
         BlockHitResult hit = findTarget(client, crosshair);
         if (hit == null || client.player.isUsingItem() || stopMovement) {
             stopBreaking(client);
@@ -241,6 +321,10 @@ public final class MiningManager {
         if (client.gameMode.continueDestroyBlock(target, hit.getDirection())) {
             client.level.addBreakingBlockEffect(target, hit.getDirection());
             client.player.swing(InteractionHand.MAIN_HAND);
+            if (isDolphin() && client.level.getBlockState(target).isAir()) {
+                dolphin.blockBroken(client, target);
+                target = null;
+            }
         }
     }
 
@@ -325,11 +409,13 @@ public final class MiningManager {
 
     private void stop(Minecraft client) {
         stopBreaking(client);
+        dolphin.reset(client, player == client.player && level == client.level);
         if (sprinting && client.player != null) {
             client.player.setSprinting(false);
             stopHorizontal(client.player);
         }
         running = false;
+        dolphinMode = false;
         sprinting = false;
         stopMovement = false;
         lockedYaw = null;

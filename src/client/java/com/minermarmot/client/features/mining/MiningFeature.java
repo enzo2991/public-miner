@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public enum MiningFeature {
     @SerializedName("autoMine") AUTO_MINE("autoMine"),
+    @SerializedName("dolphin") DOLPHIN("dolphin"),
     @SerializedName("autoSprint") AUTO_SPRINT("autoSprint"),
     @SerializedName("autoBoost") AUTO_BOOST("autoBoost"),
     @SerializedName("autoCameraLock") AUTO_CAMERA_LOCK("autoCameraLock"),

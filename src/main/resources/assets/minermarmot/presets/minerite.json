@@ -2,6 +2,7 @@
     "name": "Minerite",
     "features": {
         "autoMine": true,
+        "dolphin": true,
         "autoSprint": true,
         "autoBoost": true,
         "autoCameraLock": true,
@@ -20,7 +21,10 @@
             "obstacleMiner"
         ],
         "worldBorderDistance": 0,
-        "autoBoostIntervalMs": 200
+        "autoBoostIntervalMs": 200,
+        "dolphinMinY": 10,
+        "dolphinMaxY": 230,
+        "dolphinAdvanceBlocks": 5
     },
     "tnt": {
         "builder": false,

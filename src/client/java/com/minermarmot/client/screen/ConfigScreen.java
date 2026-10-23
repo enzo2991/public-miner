@@ -8,6 +8,7 @@ import com.minermarmot.client.config.ConfigManager;
 import com.minermarmot.client.features.mining.MiningConfig;
 import com.minermarmot.client.features.mining.MiningFeature;
 import com.minermarmot.client.screen.widget.ConfigSectionWidget;
+import com.minermarmot.client.screen.widget.DolphinSettingsControls;
 import com.minermarmot.client.features.alerts.AlertIcon;
 import com.minermarmot.client.features.alerts.SoundSelectionScreen;
 import net.minecraft.client.Minecraft;
@@ -130,7 +131,9 @@ public class ConfigScreen extends ConfigMenuScreen {
                     if (feature == MiningFeature.PLACEMENT_WITHOUT_DELAY || !preset.allows(feature) || !matches(label.getString())) {
                         continue;
                     }
-                    if (feature == MiningFeature.AUTO_BOOST) {
+                    if (feature == MiningFeature.DOLPHIN) {
+                        options.addDolphin();
+                    } else if (feature == MiningFeature.AUTO_BOOST) {
                         options.addAutoBoost();
                     } else if (feature == MiningFeature.WORLD_BORDER) {
                         List<Integer> distances = new ArrayList<>(MiningConfig.BORDER_DISTANCES);
@@ -287,7 +290,6 @@ public class ConfigScreen extends ConfigMenuScreen {
 
 
 
-
     private static CycleButton.Builder<Boolean> toggleBuilder(boolean value) {
         return CycleButton.booleanBuilder(
                 CommonComponents.OPTION_ON.copy().withStyle(style -> style.withColor(0xFFFFFF)),
@@ -362,6 +364,7 @@ public class ConfigScreen extends ConfigMenuScreen {
 
 
         void addAutoBoost() { addEntry(new AutoBoostEntry()); }
+        void addDolphin() { addEntry(new DolphinEntry(), 40); }
 
         void addNumber(Component label, int value, int min, int max, IntConsumer set) {
             addEntry(new NumberEntry(label, value, min, max, set));
@@ -486,6 +489,18 @@ public class ConfigScreen extends ConfigMenuScreen {
 
         @Override public List<? extends GuiEventListener> children() { return List.of(interval, enabled); }
         @Override public List<? extends NarratableEntry> narratables() { return List.of(interval, enabled); }
+    }
+
+    private final class DolphinEntry extends OptionEntry {
+        private final DolphinSettingsControls controls = new DolphinSettingsControls(font, config.mining, ConfigScreen.this::applyChanges);
+
+        @Override
+        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float tick) {
+            controls.render(graphics, getContentX(), getContentY(), getContentWidth(), mouseX, mouseY, hovered, tick);
+        }
+
+        @Override public List<? extends GuiEventListener> children() { return controls.children(); }
+        @Override public List<? extends NarratableEntry> narratables() { return controls.children(); }
     }
 
     private final class NumberEntry extends OptionEntry {
